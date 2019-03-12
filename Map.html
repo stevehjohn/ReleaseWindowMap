@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Release Window Map</title>
+    <script src="scripts/d3.min.js"></script>
+    <script src="scripts/topojson.min.js"></script>
+    <script src="scripts/datamaps.world.hires.min.js"></script>
+    <style>
+        body {
+            background-color: #131313;
+            font-family: "Lucida Console", Monaco, monospace;
+        }
+        div.info {
+            position: absolute;
+            padding: 2px 4px;
+            left: 5%;
+            top: 80%;
+        }
+        div.country {
+            color: #00e800;
+        }
+        pre {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="container" style="width: 100%; height: 80vh;"></div>
+    <div class="info" id="info"></div>
+    <script>
+        var countries = ['GBR'];
+
+        var windows = [
+            [], [],
+            [
+                // Tuesday
+                {
+                    start: '16:00',
+                    end: '23:00',
+                    country: 'GBR',
+                    environment: 'PROD'
+                },
+                {
+                    start: '15:30',
+                    end: '23:45',
+                    country: 'GBR',
+                    environment: 'TEST'
+                }
+            ]
+        ];
+
+        var map = new Datamap({
+            element: document.getElementById('container'),
+            fills: {
+                OK: '#0e97dd',
+                defaultFill: '#000000'
+            },
+            geographyConfig: {
+                highlightOnHover: false,
+                popupOnHover: false,
+                borderColor: '#14517a'
+            }
+        });
+
+        function getHour(time) {
+            return parseInt(time.substr(0, 2));
+        }
+
+        function getMinute(time) {
+            return parseInt(time.substr(3, 2));
+        }
+
+        function update() {
+            var info = [];
+
+            var utc = new Date();
+
+            var day = utc.getDay();
+
+            var dayWindows = windows[day];
+
+            var i;
+
+            for (i = 0; i < dayWindows.length; i++) {
+                var slot = dayWindows[i];
+
+                var start = getHour(slot.start) * 3600 + getMinute(slot.start) * 60;
+                var end = getHour(slot.end) * 3600 + getMinute(slot.end) * 60;
+                var now = utc.getUTCHours() * 3600 + utc.getUTCMinutes() * 60 + utc.getSeconds();
+
+                if (now >= start && now <= end) {
+                    map.updateChoropleth(JSON.parse('{ "' + slot.country + '": { "fillKey": "OK" }}'));
+                    info.push(JSON.parse(' { "country": "' +
+                        slot.country +
+                        '", "environment": "' +
+                        slot.environment +
+                        '", "remaining": ' +
+                        (end - now) +
+                        ' }'));
+                } else {
+                    // Only remove if added...
+                }
+            }
+
+            for (i = 0; i < info.length; i++) {
+                var detail = info[i];
+
+                var div = document.getElementById(detail.country);
+                if (!div) {
+                    div = document.createElement('div');
+                    div.setAttribute('class', 'country');
+                    div.setAttribute('id', detail.country);
+                    document.getElementById('info').appendChild(div);
+
+                    div.innerHTML = '<pre>' + detail.country + '</pre><pre></pre>';
+                }
+
+                var pre = div.children[1].innerHTML;
+                pre = pre + detail.environment + '\n';
+                div.children[1].innerHTML = pre;
+            }
+        }
+
+        update();
+
+        setInterval(update, 1000);
+    </script>
+</body>
+</html>
