@@ -141,7 +141,9 @@
                 if (!openCountries.includes(countries[i])) {
                     map.updateChoropleth(JSON.parse('{ "' + countries[i] + '": { "fillKey": "" }}'));
                     div = document.getElementById(countries[i]);
-                    div.parentNode.removeChild(div);
+                    if (div) {
+                        div.parentNode.removeChild(div);
+                    }
                 }
             }
 
