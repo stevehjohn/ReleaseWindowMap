@@ -23,7 +23,7 @@
             position: absolute;
             padding: 2px 4px;
             left: 5%;
-            top: 85%;
+            top: 80%;
             display: flex;
             /* ReSharper disable once CssBrowserCompatibility */
             flex-wrap: wrap;
@@ -52,6 +52,7 @@
 
         pre {
             margin: 0;
+            font-size: large;
         }
     </style>
 </head>
@@ -649,6 +650,29 @@
                 pad(seconds % 60);
         }
 
+        function displayCountry(country) {
+            switch (country) {
+                case 'AUS':
+                    return 'AU';
+                case 'DNK':
+                    return 'DK';
+                case 'ESP':
+                    return 'ES';
+                case 'FRA':
+                    return 'FR';
+                case 'IRL':
+                    return 'IE';
+                case 'ITA':
+                    return 'IT';
+                case 'NOR':
+                    return 'NO';
+                case 'NZL':
+                    return 'NZ';
+                default:
+                    return 'UK';
+            }
+        }
+
         function init() {
             for (var i = 0; i < countries.length; i++) {
                 var div = document.createElement('div');
@@ -656,8 +680,42 @@
                 div.setAttribute('id', countries[i]);
                 document.getElementById('info').appendChild(div);
 
-                div.innerHTML = '<pre> <span style="color: #19a7e9;">' + countries[i] + '</pre><pre></pre>';
+                div.innerHTML = '<pre> <span style="color: #19a7e9;">' + displayCountry(countries[i]) + '</pre><pre></pre>';
             }
+        }
+
+        function formatTime(time, country) {
+            var zone;
+            switch (country) {
+                case 'AUS':
+                    zone = 'Australia/Sydney';
+                    break;
+                case 'DNK':
+                    zone = 'Europe/Copenhagen';
+                    break;
+                case 'ESP':
+                    zone = 'Europe/Madrid';
+                    break;
+                case 'FRA':
+                    zone = 'Europe/Paris';
+                    break;
+                case 'ITA':
+                    zone = 'Europe/Rome';
+                    break;
+                case 'NOR':
+                    zone = 'Europe/Oslo';
+                    break;
+                case 'NZL':
+                    zone = 'Pacific/Auckland';
+                    break;
+                default:
+                    zone = 'Europe/London';
+                    break;
+            }
+
+            var m = window.moment(time);
+
+            return m.tz(zone).format('HH:mm A');
         }
 
         function update() {
@@ -727,8 +785,10 @@
                 div.children[1].innerHTML = pre;
             }
 
+            var country;
+
             for (i = 0; i < countries.length; i++) {
-                var country = countries[i];
+                country = countries[i];
 
                 if (!openCountries.includes(country)) {
                     div = document.getElementById(country);
@@ -781,6 +841,15 @@
                 }
             }
 
+            for (i = 0; i < countries.length; i++) {
+                country = countries[i];
+
+                div = document.getElementById(country);
+                pre = div.children[1].innerHTML;
+                pre = pre + '\n<span style="color: #19a7e9;"> ' + formatTime(utc, country) + '</span>\n';
+                div.children[1].innerHTML = pre;
+            }
+
             // 86,400
             var middayLine = document.getElementById('time');
             var left = (window.innerWidth / 86400) * now;
@@ -793,7 +862,7 @@
 
         update();
 
-        setInterval(update, 1000);
+        setInterval(update, 500);
     </script>
 </body>
 </html>
