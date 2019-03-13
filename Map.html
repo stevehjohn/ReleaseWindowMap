@@ -482,7 +482,7 @@
                 div.setAttribute('id', countries[i]);
                 document.getElementById('info').appendChild(div);
 
-                div.innerHTML = '<pre>' + countries[i] + '</pre><pre></pre>';
+                div.innerHTML = '<pre> <span style="color: #19a7e9;">' + countries[i] + '</pre><pre></pre>';
             }
         }
 
@@ -497,14 +497,15 @@
 
             var dayWindows = windows[day];
 
-            var i;
+            var now = utc.getUTCHours() * 3600 + utc.getUTCMinutes() * 60 + utc.getSeconds();
+
+            var i, start, slot;
 
             for (i = 0; i < dayWindows.length; i++) {
-                var slot = dayWindows[i];
+                slot = dayWindows[i];
 
-                var start = getHour(slot.start) * 3600 + getMinute(slot.start) * 60;
+                start = getHour(slot.start) * 3600 + getMinute(slot.start) * 60;
                 var end = getHour(slot.end) * 3600 + getMinute(slot.end) * 60;
-                var now = utc.getUTCHours() * 3600 + utc.getUTCMinutes() * 60 + utc.getSeconds();
 
                 if (now >= start && now <= end) {
                     map.updateChoropleth(JSON.parse('{ "' + slot.country + '": { "fillKey": "OK" }}'));
@@ -534,20 +535,59 @@
                 }
             }
 
+            var pre;
+
             for (i = 0; i < info.length; i++) {
                 var detail = info[i];
 
                 div = document.getElementById(detail.country);
 
-                var pre = div.children[1].innerHTML;
+                pre = div.children[1].innerHTML;
                 var color = '#00e800';
                 if (detail.remaining < 1800) {
                     var g = Math.floor((232 / 1800) * detail.remaining);
                     var r = 232 - g;
                     color = '#' + pad(r.toString(16)) + pad(g.toString(16)) + '00';
                 }
-                pre = pre + '<span style="color: ' + color + ';">' + formatSeconds(detail.remaining) + '</span>\n';
+                pre = pre + '<span style="color: ' + color + ';"> ' + formatSeconds(detail.remaining) + '</span>\n';
                 div.children[1].innerHTML = pre;
+            }
+
+            for (i = 0; i < countries.length; i++) {
+                var country = countries[i];
+
+                if (!openCountries.includes(country)) {
+                    div = document.getElementById(country);
+
+                    var next = 2147483647;
+
+                    for (var d = day; d < day + 7; d++) {
+                        dayWindows = windows[d % 7];
+
+                        for (var x = 0; x < dayWindows.length; x++) {
+                            slot = dayWindows[x];
+                            if (slot.country === country) {
+                                start = getHour(slot.start) * 3600 + getMinute(slot.start) * 60;
+
+                                if (start > now && start < next) {
+                                    next = start;
+                                }
+                            }
+
+                            if (next !== 2147483647) {
+                                break;
+                            }
+                        }
+                    }
+
+                    pre = div.children[1].innerHTML;
+                    if (next === 2147483647) {
+                        pre = pre + '<span style="color: #e80000;"> ?</span>\n';
+                    } else {
+                        pre = pre + '<span style="color: #e80000;">-' + formatSeconds(next - now) + '</span>\n';
+                    }
+                    div.children[1].innerHTML = pre;
+                }
             }
         }
 
