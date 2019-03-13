@@ -3,9 +3,12 @@
 <head>
     <meta charset="utf-8" />
     <title>Release Window Map</title>
+    <!-- ReSharper disable Html.PathError -->
     <script src="scripts/d3.min.js"></script>
     <script src="scripts/topojson.min.js"></script>
     <script src="scripts/datamaps.world.hires.min.js"></script>
+    <script src="scripts/moment.js"></script>
+    <script src="scripts/moment-timezone-with-data.min.js"></script>
     <style>
         body {
             margin: 0;
@@ -20,15 +23,31 @@
             position: absolute;
             padding: 2px 4px;
             left: 5%;
-            top: 90%;
+            top: 85%;
             display: flex;
+            /* ReSharper disable once CssBrowserCompatibility */
             flex-wrap: wrap;
         }
 
         div.country {
             color: #00e800;
+            /* ReSharper disable once InvalidValue */
             display: flexbox;
             margin-right: 20px;
+        }
+
+        div#container {
+            width: 100%;
+            height: 100vh;
+        }
+
+        div#time {
+            position: absolute;
+            top: 0;
+            height: 100vh;
+            width: 2px;
+            background-color: #ffc300;
+            opacity: 0.4;
         }
 
         pre {
@@ -37,7 +56,8 @@
     </style>
 </head>
 <body>
-    <div id="container" style="width: 100%; height: 100vh;"></div>
+    <div id="container"></div>
+    <div id="time"></div>
     <div class="info" id="info"></div>
     <script>
         var countries = ['AUS', 'DNK', 'ESP', 'FRA', 'GBR', 'IRL', 'ITA', 'NOR', 'NZL'];
@@ -436,14 +456,162 @@
             ]
         ];
 
+        var offices = [
+            {
+                // UK - Bristol
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: 51.4516607,
+                longitude: -2.599413,
+                borderWidth: 0
+            },
+            {
+                // UK - London
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: 51.516321,
+                longitude: -0.1052626,
+                borderWidth: 0
+            },
+            {
+                // UK - Borehamwood
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: 51.6582636,
+                longitude: -0.2702409,
+                borderWidth: 0
+            },
+            {
+                // Ireland
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: 53.3187668,
+                longitude: -6.2158948,
+                borderWidth: 0
+            },
+            {
+                // France
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: 48.832653,
+                longitude: 2.2745108,
+                borderWidth: 0
+            },
+            {
+                // Spain
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: 40.444133,
+                longitude: -3.6581953,
+                borderWidth: 0
+            },
+            {
+                // Italy
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: 45.4725795,
+                longitude: 9.1571298,
+                borderWidth: 0
+            },
+            {
+                // Denmark - Copenhagen
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: 55.7087167,
+                longitude: 12.5602227,
+                borderWidth: 0
+            },
+            {
+                // Denmark - Aarhus
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: 56.1389854,
+                longitude: 10.1699192,
+                borderWidth: 0
+            },
+            {
+                // Switzerland
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: 47.3725304,
+                longitude: 8.5279722,
+                borderWidth: 0
+            },
+            {
+                // Norway
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: 59.8939529,
+                longitude: 10.6450359,
+                borderWidth: 0
+            },
+            {
+                // Australia - Sydney
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: -33.8708419,
+                longitude: 151.2051413,
+                borderWidth: 0
+            },
+            {
+                // Australia - Mount Waverly
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: -37.8772826,
+                longitude: 145.124359,
+                borderWidth: 0
+            },
+            {
+                // New Zealand
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: -36.8621369,
+                longitude: 174.7372029,
+                borderWidth: 0
+            },
+            {
+                // Brazil
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: -23.5432253,
+                longitude: -46.7357653,
+                borderWidth: 0
+            },
+            {
+                // Canada - Toronto
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: 43.6462565,
+                longitude: -79.3984558,
+                borderWidth: 0
+            },
+            {
+                // Canada - Winnipeg
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: 49.8983662,
+                longitude: -97.1461043,
+                borderWidth: 0
+            },
+            {
+                // Canada - Winnipeg
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: 19.4301372,
+                longitude: -99.17133,
+                borderWidth: 0
+            }
+        ];
+
         var map;
 
         function draw() {
-            map = new Datamap({
+            map = new window.Datamap({
                 element: document.getElementById('container'),
                 fills: {
                     OK: '#0e97dd',
                     CLOSED: '#400000',
+                    OFFICE: '#ffffff',
                     defaultFill: '#000000'
                 },
                 geographyConfig: {
@@ -453,6 +621,8 @@
                 },
                 projection: 'mercator'
             });
+
+            map.bubbles(offices);
         }
 
         function getHour(time) {
@@ -610,6 +780,11 @@
                     div.children[1].innerHTML = pre;
                 }
             }
+
+            // 86,400
+            var middayLine = document.getElementById('time');
+            var left = (window.innerWidth / 86400) * now;
+            middayLine.setAttribute("style", "left: " + left + 'px;');
         }
 
         draw();
