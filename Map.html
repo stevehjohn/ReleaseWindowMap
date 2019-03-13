@@ -65,6 +65,15 @@
             opacity: 0.4;
         }
 
+        div#alarm {
+            position: absolute;
+            top: 0;
+            height: 100vh;
+            width: 2px;
+            background-color: #a00000;
+            opacity: 0.4;
+        }
+
         pre {
             margin: 0;
             font-size: large;
@@ -83,10 +92,12 @@
     <div id="container"></div>
     <div id="time"></div>
     <div id="beer"></div>
-    <div class="info" id="info"></div>
+    <div id="alarm"></div>
+<div class="info" id="info"></div>
     <div class="legend">
         <pre><span style="color: #ffc300">&#xff0d;</span> <span style="color: #19a7e9">High noon</span>
-<span style="color: #009900">&#xff0d;</span> <span style="color: #19a7e9">Beer o'clock</span></pre>
+<span style="color: #009900">&#xff0d;</span> <span style="color: #19a7e9">Beer o'clock</span>
+<span style="color: #a00000">&#xff0d;</span> <span style="color: #19a7e9">Bloody alarm o'clock</span></pre>
     </div>
     <script>
         var countries = ['AUS', 'DNK', 'ESP', 'FRA', 'GBR', 'IRL', 'ITA', 'NOR', 'NZL'];
@@ -886,6 +897,11 @@
             left = ((window.innerWidth / 86400) * (now + 18000)) % window.innerWidth;
             console.log(left);
             beerLine.setAttribute("style", "left: " + left + 'px;');
+
+            var alarmLine = document.getElementById('alarm');
+            left = ((window.innerWidth / 86400) * (now - 18000)) % window.innerWidth;
+            console.log(left);
+            alarmLine.setAttribute("style", "left: " + left + 'px;');
         }
 
         draw();
