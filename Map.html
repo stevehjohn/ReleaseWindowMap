@@ -40,7 +40,7 @@
     <div id="container" style="width: 100%; height: 100vh;"></div>
     <div class="info" id="info"></div>
     <script>
-        var countries = ['GBR', 'ESP', 'DNK', 'IRL', 'FRA', 'NOR', 'ITA', 'AUS', 'NZL'];
+        var countries = ['AUS', 'DNK', 'ESP', 'FRA', 'GBR', 'IRL', 'ITA', 'NOR', 'NZL'];
 
         var windows = [
             [
@@ -467,12 +467,23 @@
             return num;
         }
 
-        function formatRemaining(remaining) {
-            return pad(Math.floor(remaining / 3600)) +
+        function formatSeconds(seconds) {
+            return pad(Math.floor(seconds / 3600)) +
                 ':' +
-                pad(Math.floor(remaining % 3600 / 60)) +
+                pad(Math.floor(seconds % 3600 / 60)) +
                 '.' +
-                pad(remaining % 60);
+                pad(seconds % 60);
+        }
+
+        function init() {
+            for (var i = 0; i < countries.length; i++) {
+                var div = document.createElement('div');
+                div.setAttribute('class', 'country');
+                div.setAttribute('id', countries[i]);
+                document.getElementById('info').appendChild(div);
+
+                div.innerHTML = '<pre>' + countries[i] + '</pre><pre></pre>';
+            }
         }
 
         function update() {
@@ -513,10 +524,6 @@
             for (i = 0; i < countries.length; i++) {
                 if (!openCountries.includes(countries[i])) {
                     map.updateChoropleth(JSON.parse('{ "' + countries[i] + '": { "fillKey": "CLOSED" }}'));
-                    div = document.getElementById(countries[i]);
-                    if (div) {
-                        div.parentNode.removeChild(div);
-                    }
                 }
             }
 
@@ -531,14 +538,6 @@
                 var detail = info[i];
 
                 div = document.getElementById(detail.country);
-                if (!div) {
-                    div = document.createElement('div');
-                    div.setAttribute('class', 'country');
-                    div.setAttribute('id', detail.country);
-                    document.getElementById('info').appendChild(div);
-
-                    div.innerHTML = '<pre>' + detail.country + '</pre><pre></pre>';
-                }
 
                 var pre = div.children[1].innerHTML;
                 var color = '#00e800';
@@ -547,10 +546,12 @@
                     var r = 232 - g;
                     color = '#' + pad(r.toString(16)) + pad(g.toString(16)) + '00';
                 }
-                pre = pre + '<span style="color: ' + color + ';">' + formatRemaining(detail.remaining) + '</span>\n';
+                pre = pre + '<span style="color: ' + color + ';">' + formatSeconds(detail.remaining) + '</span>\n';
                 div.children[1].innerHTML = pre;
             }
         }
+
+        init();
 
         update();
 
