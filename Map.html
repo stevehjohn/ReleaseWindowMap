@@ -15,6 +15,7 @@
             overflow-x: hidden;
             overflow-y: hidden;
         }
+
         div.info {
             position: absolute;
             padding: 2px 4px;
@@ -23,11 +24,13 @@
             display: flex;
             flex-wrap: wrap;
         }
+
         div.country {
             color: #00e800;
             display: flexbox;
             margin-right: 20px;
         }
+
         pre {
             margin: 0;
         }
@@ -37,7 +40,7 @@
     <div id="container" style="width: 100%; height: 100vh;"></div>
     <div class="info" id="info"></div>
     <script>
-        var countries = ['GBR', 'ESP', 'DNK', 'IRL', 'FRA', 'NOR', 'ITA']; // 'AUS', 'NZL'];
+        var countries = ['GBR', 'ESP', 'DNK', 'IRL', 'FRA', 'NOR', 'ITA', 'AUS', 'NZL'];
 
         var windows = [
             [
@@ -327,6 +330,7 @@
             element: document.getElementById('container'),
             fills: {
                 OK: '#0e97dd',
+                CLOSED: '#400000',
                 defaultFill: '#000000'
             },
             geographyConfig: {
@@ -398,7 +402,7 @@
 
             for (i = 0; i < countries.length; i++) {
                 if (!openCountries.includes(countries[i])) {
-                    map.updateChoropleth(JSON.parse('{ "' + countries[i] + '": { "fillKey": "" }}'));
+                    map.updateChoropleth(JSON.parse('{ "' + countries[i] + '": { "fillKey": "CLOSED" }}'));
                     div = document.getElementById(countries[i]);
                     if (div) {
                         div.parentNode.removeChild(div);
