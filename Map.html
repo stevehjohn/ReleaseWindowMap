@@ -548,8 +548,8 @@
 
                 pre = div.children[1].innerHTML;
                 var color = '#00e800';
-                if (detail.remaining < 1800) {
-                    var g = Math.floor((232 / 1800) * detail.remaining);
+                if (detail.remaining < 600) {
+                    var g = Math.floor((232 / 600) * detail.remaining);
                     var r = 232 - g;
                     color = '#' + pad(r.toString(16)) + pad(g.toString(16)) + '00';
                 }
@@ -563,24 +563,41 @@
                 if (!openCountries.includes(country)) {
                     div = document.getElementById(country);
 
-                    var next = 2147483647;
+                    var next = 0;
 
-                    for (var d = day; d < day + 7; d++) {
-                        dayWindows = windows[d % 7];
+                    var x;
 
-                        for (var x = 0; x < dayWindows.length; x++) {
-                            slot = dayWindows[x];
-                            if (slot.country === country) {
-                                start = getHour(slot.start) * 3600 + getMinute(slot.start) * 60;
+                    dayWindows = windows[day];
+                    for (x = 0; x < dayWindows.length; x++) {
+                        slot = dayWindows[x];
+                        if (slot.country === country) {
+                            start = getHour(slot.start) * 3600 + getMinute(slot.start) * 60;
 
-                                if (start > now && start < next) {
-                                    next = start;
+                            if (start > now) {
+                                next = start - now;
+                            }
+                        }
+                    }
+
+                    if (next === 0) {
+                        next = 86400 - now;
+
+                        loop1:
+                        for (var d = day + 1; d < day + 7; d++) {
+                            dayWindows = windows[d % 7];
+
+                            loop2:
+                            for (x = 0; x < dayWindows.length; x++) {
+                                slot = dayWindows[x];
+                                if (slot.country === country) {
+                                    start = getHour(slot.start) * 3600 + getMinute(slot.start) * 60;
+
+                                    next += start;
+                                    break loop1;
                                 }
                             }
 
-                            if (next !== 2147483647) {
-                                break;
-                            }
+                            next += 86400;
                         }
                     }
 
@@ -588,7 +605,7 @@
                     if (next === 2147483647) {
                         pre = pre + '<span style="color: #e80000;"> ?</span>\n';
                     } else {
-                        pre = pre + '<span style="color: #e80000;">-' + formatSeconds(next - now) + '</span>\n';
+                        pre = pre + '<span style="color: #e80000;">-' + formatSeconds(next) + '</span>\n';
                     }
                     div.children[1].innerHTML = pre;
                 }
