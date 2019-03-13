@@ -436,20 +436,24 @@
             ]
         ];
 
-        var map = new Datamap({
-            element: document.getElementById('container'),
-            fills: {
-                OK: '#0e97dd',
-                CLOSED: '#400000',
-                defaultFill: '#000000'
-            },
-            geographyConfig: {
-                highlightOnHover: false,
-                popupOnHover: false,
-                borderColor: '#14517a'
-            },
-            projection: 'mercator'
-        });
+        var map;
+
+        function draw() {
+            map = new Datamap({
+                element: document.getElementById('container'),
+                fills: {
+                    OK: '#0e97dd',
+                    CLOSED: '#400000',
+                    defaultFill: '#000000'
+                },
+                geographyConfig: {
+                    highlightOnHover: false,
+                    popupOnHover: false,
+                    borderColor: '#14517a'
+                },
+                projection: 'mercator'
+            });
+        }
 
         function getHour(time) {
             return parseInt(time.substr(0, 2));
@@ -590,6 +594,8 @@
                 }
             }
         }
+
+        draw();
 
         init();
 
