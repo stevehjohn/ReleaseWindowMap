@@ -21,12 +21,13 @@
 
         div.info {
             position: absolute;
-            padding: 2px 4px;
+            padding: 4px 6px;
             left: 5%;
             top: 80%;
             display: flex;
             /* ReSharper disable once CssBrowserCompatibility */
             flex-wrap: wrap;
+            background-color: rgba(80, 80, 80, 0.31);
         }
 
         div.country {
@@ -34,6 +35,10 @@
             /* ReSharper disable once InvalidValue */
             display: flexbox;
             margin-right: 20px;
+        }
+
+        div.country:last-child {
+            margin-right: 10px;
         }
 
         div#container {
