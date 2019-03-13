@@ -19,7 +19,7 @@
             position: absolute;
             padding: 2px 4px;
             left: 5%;
-            top: 80%;
+            top: 90%;
             display: flex;
             flex-wrap: wrap;
         }
@@ -37,30 +37,289 @@
     <div id="container" style="width: 100%; height: 100vh;"></div>
     <div class="info" id="info"></div>
     <script>
-        var countries = ['GBR', 'AUS'];
+        var countries = ['GBR', 'ESP', 'DNK', 'IRL', 'FRA', 'NOR', 'ITA']; // 'AUS', 'NZL'];
 
         var windows = [
-            [], [], [],
+            [
+                // Sunday
+            ],
+            [
+                // Monday
+                {
+                    start: '07:00',
+                    end: '14:00',
+                    country: 'GBR'
+                },
+                {
+                    start: '07:00',
+                    end: '12:00',
+                    country: 'ESP'
+                },
+                {
+                    start: '15:00',
+                    end: '16:00',
+                    country: 'ESP'
+                },
+                {
+                    start: '07:00',
+                    end: '12:00',
+                    country: 'DNK'
+                },
+                {
+                    start: '15:00',
+                    end: '16:00',
+                    country: 'DNK'
+                },
+                {
+                    start: '07:00',
+                    end: '12:00',
+                    country: 'IRL'
+                },
+                {
+                    start: '15:00',
+                    end: '16:00',
+                    country: 'IRL'
+                },
+                {
+                    start: '07:00',
+                    end: '12:00',
+                    country: 'FRA'
+                },
+                {
+                    start: '15:00',
+                    end: '16:00',
+                    country: 'FRA'
+                },
+                {
+                    start: '07:00',
+                    end: '12:00',
+                    country: 'NOR'
+                },
+                {
+                    start: '15:00',
+                    end: '16:00',
+                    country: 'NOR'
+                },
+                {
+                    start: '07:00',
+                    end: '12:00',
+                    country: 'ITA'
+                },
+                {
+                    start: '15:00',
+                    end: '16:00',
+                    country: 'ITA'
+                }
+            ],
+            [
+                // Tuesday
+                {
+                    start: '07:00',
+                    end: '14:00',
+                    country: 'GBR'
+                },
+                {
+                    start: '07:00',
+                    end: '12:00',
+                    country: 'ESP'
+                },
+                {
+                    start: '15:00',
+                    end: '16:00',
+                    country: 'ESP'
+                },
+                {
+                    start: '07:00',
+                    end: '12:00',
+                    country: 'DNK'
+                },
+                {
+                    start: '15:00',
+                    end: '16:00',
+                    country: 'DNK'
+                },
+                {
+                    start: '07:00',
+                    end: '12:00',
+                    country: 'IRL'
+                },
+                {
+                    start: '15:00',
+                    end: '16:00',
+                    country: 'IRL'
+                },
+                {
+                    start: '07:00',
+                    end: '12:00',
+                    country: 'FRA'
+                },
+                {
+                    start: '15:00',
+                    end: '16:00',
+                    country: 'FRA'
+                },
+                {
+                    start: '07:00',
+                    end: '12:00',
+                    country: 'NOR'
+                },
+                {
+                    start: '15:00',
+                    end: '16:00',
+                    country: 'NOR'
+                },
+                {
+                    start: '07:00',
+                    end: '12:00',
+                    country: 'ITA'
+                },
+                {
+                    start: '15:00',
+                    end: '16:00',
+                    country: 'ITA'
+                }
+            ],
             [
                 // Wednesday
                 {
-                    start: '03:00',
-                    end: '23:00',
-                    country: 'GBR',
-                    environment: 'PROD'
+                    start: '07:00',
+                    end: '14:00',
+                    country: 'GBR'
                 },
                 {
-                    start: '09:30',
-                    end: '23:45',
-                    country: 'GBR',
-                    environment: 'TEST'
+                    start: '07:00',
+                    end: '12:00',
+                    country: 'ESP'
                 },
                 {
-                    start: '11:08',
-                    end: '11:13',
-                    country: 'AUS',
-                    environment: 'PROD'
+                    start: '15:00',
+                    end: '16:00',
+                    country: 'ESP'
+                },
+                {
+                    start: '07:00',
+                    end: '12:00',
+                    country: 'DNK'
+                },
+                {
+                    start: '15:00',
+                    end: '16:00',
+                    country: 'DNK'
+                },
+                {
+                    start: '07:00',
+                    end: '12:00',
+                    country: 'IRL'
+                },
+                {
+                    start: '15:00',
+                    end: '16:00',
+                    country: 'IRL'
+                },
+                {
+                    start: '07:00',
+                    end: '12:00',
+                    country: 'FRA'
+                },
+                {
+                    start: '15:00',
+                    end: '16:00',
+                    country: 'FRA'
+                },
+                {
+                    start: '07:00',
+                    end: '12:00',
+                    country: 'NOR'
+                },
+                {
+                    start: '15:00',
+                    end: '16:00',
+                    country: 'NOR'
+                },
+                {
+                    start: '07:00',
+                    end: '12:00',
+                    country: 'ITA'
+                },
+                {
+                    start: '15:00',
+                    end: '16:00',
+                    country: 'ITA'
                 }
+            ],
+            [
+                // Thursday
+                {
+                    start: '07:00',
+                    end: '14:00',
+                    country: 'GBR'
+                },
+                {
+                    start: '07:00',
+                    end: '12:00',
+                    country: 'ESP'
+                },
+                {
+                    start: '15:00',
+                    end: '16:00',
+                    country: 'ESP'
+                },
+                {
+                    start: '07:00',
+                    end: '12:00',
+                    country: 'DNK'
+                },
+                {
+                    start: '15:00',
+                    end: '16:00',
+                    country: 'DNK'
+                },
+                {
+                    start: '07:00',
+                    end: '12:00',
+                    country: 'IRL'
+                },
+                {
+                    start: '15:00',
+                    end: '16:00',
+                    country: 'IRL'
+                },
+                {
+                    start: '07:00',
+                    end: '12:00',
+                    country: 'FRA'
+                },
+                {
+                    start: '15:00',
+                    end: '16:00',
+                    country: 'FRA'
+                },
+                {
+                    start: '07:00',
+                    end: '12:00',
+                    country: 'NOR'
+                },
+                {
+                    start: '15:00',
+                    end: '16:00',
+                    country: 'NOR'
+                },
+                {
+                    start: '07:00',
+                    end: '12:00',
+                    country: 'ITA'
+                },
+                {
+                    start: '15:00',
+                    end: '16:00',
+                    country: 'ITA'
+                }
+            ],
+            [
+                // Friday
+            ],
+            [
+                // Saturday
             ]
         ];
 
@@ -126,8 +385,6 @@
                     map.updateChoropleth(JSON.parse('{ "' + slot.country + '": { "fillKey": "OK" }}'));
                     info.push(JSON.parse(' { "country": "' +
                         slot.country +
-                        '", "environment": "' +
-                        slot.environment +
                         '", "remaining": ' +
                         (end - now) +
                         ' }'));
@@ -170,17 +427,13 @@
                 }
 
                 var pre = div.children[1].innerHTML;
-                var env = detail.environment;
-                while (env.length < 7) {
-                    env += ' ';
-                }
                 var color = '#00e800';
                 if (detail.remaining < 1800) {
                     var g = Math.floor((232 / 1800) * detail.remaining);
                     var r = 232 - g;
                     color = '#' + pad(r.toString(16)) + pad(g.toString(16)) + '00';
                 }
-                pre = pre + '<span style="color: ' + color + ';">' + env + formatRemaining(detail.remaining) + '</span>\n';
+                pre = pre + '<span style="color: ' + color + ';">' + formatRemaining(detail.remaining) + '</span>\n';
                 div.children[1].innerHTML = pre;
             }
         }
