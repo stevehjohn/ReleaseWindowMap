@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title>Release Window Map</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <!-- ReSharper disable Html.PathError -->
     <script src="scripts/d3.min.js"></script>
     <script src="scripts/topojson.min.js"></script>
@@ -37,9 +38,9 @@
             margin-right: 20px;
         }
 
-        div.country:last-child {
-            margin-right: 10px;
-        }
+            div.country:last-child {
+                margin-right: 10px;
+            }
 
         div#container {
             width: 100%;
@@ -55,16 +56,38 @@
             opacity: 0.4;
         }
 
+        div#beer {
+            position: absolute;
+            top: 0;
+            height: 100vh;
+            width: 2px;
+            background-color: #009900;
+            opacity: 0.4;
+        }
+
         pre {
             margin: 0;
             font-size: large;
+        }
+
+        .legend {
+            position: absolute;
+            left: 5%;
+            top: 60%;
+            background-color: rgba(80, 80, 80, 0.31);
+            padding: 4px 20px;
         }
     </style>
 </head>
 <body>
     <div id="container"></div>
     <div id="time"></div>
+    <div id="beer"></div>
     <div class="info" id="info"></div>
+    <div class="legend">
+        <pre><span style="color: #ffc300">-</span> <span style="color: #19a7e9">High noon</span>
+<span style="color: #009900">-</span> <span style="color: #19a7e9">Beer o'clock</span></pre>
+    </div>
     <script>
         var countries = ['AUS', 'DNK', 'ESP', 'FRA', 'GBR', 'IRL', 'ITA', 'NOR', 'NZL'];
 
@@ -855,10 +878,13 @@
                 div.children[1].innerHTML = pre;
             }
 
-            // 86,400
             var middayLine = document.getElementById('time');
             var left = (window.innerWidth / 86400) * now;
             middayLine.setAttribute("style", "left: " + left + 'px;');
+
+            var beerLine = document.getElementById('beer');
+            left = (window.innerWidth / 86400) * now - 100;
+            beerLine.setAttribute("style", "left: " + left + 'px;');
         }
 
         draw();
