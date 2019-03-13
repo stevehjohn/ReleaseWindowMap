@@ -85,8 +85,8 @@
     <div id="beer"></div>
     <div class="info" id="info"></div>
     <div class="legend">
-        <pre><span style="color: #ffc300">-</span> <span style="color: #19a7e9">High noon</span>
-<span style="color: #009900">-</span> <span style="color: #19a7e9">Beer o'clock</span></pre>
+        <pre><span style="color: #ffc300">&#xff0d;</span> <span style="color: #19a7e9">High noon</span>
+<span style="color: #009900">&#xff0d;</span> <span style="color: #19a7e9">Beer o'clock</span></pre>
     </div>
     <script>
         var countries = ['AUS', 'DNK', 'ESP', 'FRA', 'GBR', 'IRL', 'ITA', 'NOR', 'NZL'];
@@ -883,7 +883,7 @@
             middayLine.setAttribute("style", "left: " + left + 'px;');
 
             var beerLine = document.getElementById('beer');
-            left = (window.innerWidth / 86400) * now - 100;
+            left = ((window.innerWidth / 86400) * (now + 18000)) % 86400;
             beerLine.setAttribute("style", "left: " + left + 'px;');
         }
 
