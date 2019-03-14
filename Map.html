@@ -899,11 +899,11 @@
             }
 
             var middayLine = document.getElementById('time');
-            var left = (window.innerWidth / 86400) * now;
+            var left = ((window.innerWidth / 86400) * (now - 650)) % window.innerWidth;
             middayLine.setAttribute("style", "left: " + left + 'px;');
 
             var beerLine = document.getElementById('beer');
-            left = ((window.innerWidth / 86400) * (now - 18000)) % window.innerWidth;
+            left = ((window.innerWidth / 86400) * (now - 18650)) % window.innerWidth;
             console.log(left);
             beerLine.setAttribute("style", "left: " + left + 'px;');
         }
