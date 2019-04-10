@@ -96,6 +96,14 @@
             background-color: rgba(80, 80, 80, 0.31);
             padding: 4px 20px;
         }
+
+        img.boom {
+            position: absolute;
+            display: none;
+            z-index: 99999;
+            width: 100px;
+            height: 100px;
+        }
     </style>
 </head>
 <body>
@@ -796,14 +804,80 @@
             }
         }
 
+        var dots = [];
+
+        function setBoomTime() {
+            var now = new Date();
+            var ttl = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 17, 0, 0, 0) - now;
+            if (ttl < 0) {
+                ttl += 86400000;
+            }
+            setTimeout(function() {
+                explodeAll();
+                setBoomTime();
+            },
+                ttl);
+        }
+
         function init() {
-            for (var i = 0; i < countries.length; i++) {
+            var i;
+
+            var circles = document.getElementsByTagName('circle');
+            for (i = 0; i < offices.length; i++) {
+                var office = offices[i];
+                for (var c = 0; c < circles.length; c++) {
+                    var data = circles[c].getAttribute('data-info');
+
+                    if (data.indexOf(office.name) > -1) {
+                        var point = new Object();
+                        point.x = circles[c].getAttribute('cx');
+                        point.y = circles[c].getAttribute('cy');
+
+                        dots.push(point);
+                    }
+                }
+            }
+
+            for (i = 0; i < countries.length; i++) {
                 var div = document.createElement('div');
                 div.setAttribute('class', 'country');
                 div.setAttribute('id', countries[i]);
                 document.getElementById('info').appendChild(div);
 
                 div.innerHTML = '<pre> <span style="color: #19a7e9;">' + displayCountry(countries[i]) + '</pre><pre></pre>';
+            }
+
+            setBoomTime();
+        }
+
+        var boomCount = 0;
+
+        function explode(x, y) {
+            var img = new Image();
+            img.setAttribute('class', 'boom');
+            img.setAttribute('style', 'left: ' + (x - 50) + 'px; top: ' + (y - 50) + 'px; display: block;');
+            img.setAttribute('src', 'img/explosion.gif?bc=' + boomCount);
+            boomCount++;
+
+            document.getElementById('container').appendChild(img);
+
+            setTimeout(function () {
+                document.getElementById('container').removeChild(img);
+            }, 7300);
+        }
+
+        function explodeWithDelay(x, y, delay) {
+            setTimeout(function() {
+                    explode(x, y);
+                },
+                delay);
+        }
+
+        function explodeAll() {
+            var wait = 0;
+            for (var i = 0; i < dots.length; i++) {
+                explodeWithDelay(dots[i].x, dots[i].y, wait);
+                wait += 1000 + Math.random() * 1000;
             }
         }
 
@@ -992,7 +1066,7 @@
             middayLine.setAttribute("style", "left: " + left + 'px;');
 
             var beerLine = document.getElementById('beer');
-            left = getXPositionForTime(now - 18650);
+            left = getXPositionForTime(now - 18000);
             beerLine.setAttribute("style", "left: " + left + 'px;');
         }
 
@@ -1006,16 +1080,16 @@
 
         var scan = 0;
 
-                            //function updateScan() {
-                            //    var scanLine = document.getElementById('scan');
-                            //    scanLine.setAttribute("style", "top: " + scan + "px;");
-                            //    scan++;
-                            //    if (scan > window.innerHeight) {
-                            //        scan = 0;
-                            //    }
-                            //}
+        //function updateScan() {
+        //    var scanLine = document.getElementById('scan');
+        //    scanLine.setAttribute("style", "top: " + scan + "px;");
+        //    scan++;
+        //    if (scan > window.innerHeight) {
+        //        scan = 0;
+        //    }
+        //}
 
-                            //setInterval(updateScan, 1);
+        //setInterval(updateScan, 1);
     </script>
 </body>
 </html>
