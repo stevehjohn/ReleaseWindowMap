@@ -82,6 +82,7 @@
             height: 1px;
             background-color: #19a7e9;
             opacity: 0.2;
+            display: none;
         }
 
         pre {
@@ -111,7 +112,7 @@
     <div id="time"></div>
     <div id="beer"></div>
     <div id="alarm"></div>
-    <!--    <div id="scan"></div>-->
+    <div id="scan"></div>
     <div class="info" id="info"></div>
     <div class="legend">
         <pre><span style="color: #ffc300">&#xff0d;</span> <span style="color: #19a7e9">High noon</span>
@@ -848,6 +849,10 @@
             }
 
             setBoomTime();
+
+            document.getElementById('container').onclick = function(e) {
+                explode(e.pageX, e.pageY);
+            }
         }
 
         var boomCount = 0;
@@ -879,6 +884,39 @@
                 explodeWithDelay(dots[i].x, dots[i].y, wait);
                 wait += 1000 + Math.random() * 1000;
             }
+        }
+
+        var scanY = 0;
+
+        function randomizeScanExplode() {
+            var secs = 43200 + Math.random() * 86400;
+            setTimeout(function() {
+                    scanExplode();
+                },
+                secs * 1000);
+        }
+
+        function scanLine() {
+            document.getElementById('scan').setAttribute("style", "display: block; top: " + scanY + "px;");
+            scanY++;
+            for (var c = 0; c < dots.length; c++) {
+                if (Math.floor(dots[c].y) === scanY) {
+                    explode(dots[c].x, scanY);
+                }
+            }
+            if (scanY < window.innerHeight) {
+                setTimeout(function() {
+                        scanLine();
+                    },
+                    100);
+            } else {
+                document.getElementById('scan').setAttribute("style", "display: none;");
+            }
+        }
+
+        function scanExplode() {
+            scanY = 0;
+            scanLine();
         }
 
         function formatTime(time, country) {
@@ -1078,18 +1116,7 @@
 
         setInterval(update, 500);
 
-        var scan = 0;
-
-        //function updateScan() {
-        //    var scanLine = document.getElementById('scan');
-        //    scanLine.setAttribute("style", "top: " + scan + "px;");
-        //    scan++;
-        //    if (scan > window.innerHeight) {
-        //        scan = 0;
-        //    }
-        //}
-
-        //setInterval(updateScan, 1);
+        randomizeScanExplode();
     </script>
 </body>
 </html>
