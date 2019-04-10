@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title>Release Window Map</title>
+    <link rel="shortcut icon" href="favicon.ico">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <!-- ReSharper disable Html.PathError -->
     <script src="scripts/d3.min.js"></script>
@@ -507,148 +508,220 @@
 
         var offices = [
             {
-                // UK - Bristol
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: 51.4516607,
                 longitude: -2.599413,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'Bristol'
             },
             {
-                // UK - London
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: 51.516321,
                 longitude: -0.1052626,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'London'
             },
             {
-                // UK - Borehamwood
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: 51.6582636,
                 longitude: -0.2702409,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'Borehamwood'
             },
             {
-                // Ireland
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: 53.3187668,
                 longitude: -6.2158948,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'Dublin'
             },
             {
-                // France
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: 48.832653,
                 longitude: 2.2745108,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'Paris'
             },
             {
-                // Spain
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: 40.444133,
                 longitude: -3.6581953,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'Madrid'
             },
             {
-                // Italy
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: 45.4725795,
                 longitude: 9.1571298,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'Milan'
             },
             {
-                // Denmark - Copenhagen
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: 55.7087167,
                 longitude: 12.5602227,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'Copenhagen'
             },
             {
-                // Denmark - Aarhus
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: 56.1389854,
                 longitude: 10.1699192,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'Aarhus'
             },
             {
-                // Switzerland
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: 47.3725304,
                 longitude: 8.5279722,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'Zurich'
             },
             {
-                // Norway
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: 59.8939529,
                 longitude: 10.6450359,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'Oslo'
             },
             {
-                // Australia - Sydney
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: -33.8708419,
                 longitude: 151.2051413,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'Sydney'
             },
             {
-                // Australia - Mount Waverly
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: -37.8772826,
                 longitude: 145.124359,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'Mount Waverly'
             },
             {
-                // New Zealand
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: -36.8621369,
                 longitude: 174.7372029,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'Auckland'
             },
             {
-                // Brazil
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: -23.5432253,
                 longitude: -46.7357653,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'Sao Paulo'
             },
             {
-                // Canada - Toronto
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: 43.6462565,
                 longitude: -79.3984558,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'Toronto'
             },
             {
-                // Canada - Winnipeg
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: 49.8983662,
                 longitude: -97.1461043,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'Winnipeg'
             },
             {
-                // Canada - Winnipeg
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: 19.4301372,
                 longitude: -99.17133,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'Mexico City'
+            },
+            {
+                radius: 2,
+                fillKey: 'CUSTOMER',
+                latitude: 51.0486,
+                longitude: -114.0708,
+                borderWidth: 0,
+                name: 'Calgary'
+            },
+            {
+                radius: 2,
+                fillKey: 'CUSTOMER',
+                latitude: 45.5017,
+                longitude: -73.5673,
+                borderWidth: 0,
+                name: 'Montreal'
+            },
+            {
+                radius: 2,
+                fillKey: 'CUSTOMER',
+                latitude: 52.9399,
+                longitude: -73.5491,
+                borderWidth: 0,
+                name: 'Quebec'
+            },
+            {
+                radius: 2,
+                fillKey: 'CUSTOMER',
+                latitude: 49.2827,
+                longitude: -123.1207,
+                borderWidth: 0,
+                name: 'Vancouver'
+            },
+            {
+                radius: 2,
+                fillKey: 'CUSTOMER',
+                latitude: -31.9505,
+                longitude: 115.8605,
+                borderWidth: 0,
+                name: 'Perth'
+            },
+            {
+                radius: 2,
+                fillKey: 'CUSTOMER',
+                latitude: -34.9285,
+                longitude: 138.6007,
+                borderWidth: 0,
+                name: 'Adelaide'
+            },
+            {
+                radius: 2,
+                fillKey: 'CUSTOMER',
+                latitude: -41.2865,
+                longitude: 174.7762,
+                borderWidth: 0,
+                name: 'Wellington'
+            },
+            {
+                radius: 2,
+                fillKey: 'RANDOM',
+                latitude: 35.9426466,
+                longitude: 14.2382668,
+                borderWidth: 0,
+                name: 'Atlantis'
+            },
+            {
+                radius: 2,
+                fillKey: 'RANDOM',
+                latitude: 30.016858,
+                longitude: 31.1546237,
+                borderWidth: 0,
+                name: 'Stargate Found'
             }
         ];
 
@@ -661,6 +734,8 @@
                     OK: '#0e97dd',
                     CLOSED: '#400000',
                     OFFICE: '#ffffff',
+                    CUSTOMER: '#ffff00',
+                    RANDOM: '#ff8080',
                     defaultFill: '#000000'
                 },
                 geographyConfig: {
