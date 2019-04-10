@@ -1,0 +1,1136 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Release Window Map</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <!-- ReSharper disable Html.PathError -->
+    <script src="scripts/d3.min.js"></script>
+    <script src="scripts/topojson.min.js"></script>
+    <script src="scripts/datamaps.world.hires.min.js"></script>
+    <script src="scripts/moment.js"></script>
+    <script src="scripts/moment-timezone-with-data.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #131313;
+            font-family: "Lucida Console", Monaco, monospace;
+            overflow-x: hidden;
+            overflow-y: hidden;
+        }
+
+        div.info {
+            position: absolute;
+            padding: 4px 6px;
+            left: 5%;
+            top: 80%;
+            display: flex;
+            /* ReSharper disable once CssBrowserCompatibility */
+            flex-wrap: wrap;
+            background-color: rgba(80, 80, 80, 0.31);
+        }
+
+        div.country {
+            color: #00e800;
+            /* ReSharper disable once InvalidValue */
+            display: flexbox;
+            margin-right: 20px;
+        }
+
+            div.country:last-child {
+                margin-right: 10px;
+            }
+
+        div#container {
+            width: 100%;
+            height: 100vh;
+        }
+
+        div#time {
+            position: absolute;
+            top: 0;
+            height: 100vh;
+            width: 2px;
+            background-color: #ffc300;
+            opacity: 0.4;
+        }
+
+        div#beer {
+            position: absolute;
+            top: 0;
+            height: 100vh;
+            width: 2px;
+            background-color: #009900;
+            opacity: 0.4;
+        }
+
+        div#alarm {
+            position: absolute;
+            top: 0;
+            height: 100vh;
+            width: 2px;
+            background-color: #a00000;
+            opacity: 0.4;
+        }
+
+        div#scan {
+            position: absolute;
+            left: 0;
+            width: 100vw;
+            height: 1px;
+            background-color: #19a7e9;
+            opacity: 0.2;
+            display: none;
+        }
+
+        pre {
+            margin: 0;
+            font-size: large;
+        }
+
+        .legend {
+            position: absolute;
+            left: 5%;
+            top: 60%;
+            background-color: rgba(80, 80, 80, 0.31);
+            padding: 4px 20px;
+        }
+
+        img.boom {
+            position: absolute;
+            display: none;
+            z-index: 99999;
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+    <div id="time"></div>
+    <div id="beer"></div>
+    <div id="scan"></div>
+    <div class="info" id="info"></div>
+    <div class="legend">
+        <pre><span style="color: #ffc300">&#xff0d;</span> <span style="color: #19a7e9">High noon</span>
+<span style="color: #009900">&#xff0d;</span> <span style="color: #19a7e9">Beer o'clock</span></pre>
+    </div>
+    <script>
+        var countries = ['AUS', 'DNK', 'ESP', 'FRA', 'GBR', 'IRL', 'ITA', 'NOR', 'NZL'];
+
+        var windows = [
+            [
+                // Sunday
+            ],
+            [
+                // Monday
+                {
+                    start: '06:00',
+                    end: '13:00',
+                    country: 'GBR'
+                },
+                {
+                    start: '06:00',
+                    end: '11:00',
+                    country: 'ESP'
+                },
+                {
+                    start: '14:00',
+                    end: '15:00',
+                    country: 'ESP'
+                },
+                {
+                    start: '06:00',
+                    end: '11:00',
+                    country: 'DNK'
+                },
+                {
+                    start: '14:00',
+                    end: '15:00',
+                    country: 'DNK'
+                },
+                {
+                    start: '06:00',
+                    end: '11:00',
+                    country: 'IRL'
+                },
+                {
+                    start: '14:00',
+                    end: '15:00',
+                    country: 'IRL'
+                },
+                {
+                    start: '06:00',
+                    end: '11:00',
+                    country: 'FRA'
+                },
+                {
+                    start: '14:00',
+                    end: '15:00',
+                    country: 'FRA'
+                },
+                {
+                    start: '06:00',
+                    end: '11:00',
+                    country: 'NOR'
+                },
+                {
+                    start: '14:00',
+                    end: '15:00',
+                    country: 'NOR'
+                },
+                {
+                    start: '06:00',
+                    end: '11:00',
+                    country: 'ITA'
+                },
+                {
+                    start: '14:00',
+                    end: '15:00',
+                    country: 'ITA'
+                },
+                {
+                    start: '04:00',
+                    end: '06:00',
+                    country: 'AUS'
+                },
+                {
+                    start: '04:00',
+                    end: '06:00',
+                    country: 'NZL'
+                },
+                {
+                    start: '13:00',
+                    end: '23:59',
+                    country: 'AUS'
+                },
+                {
+                    start: '13:00',
+                    end: '23:59',
+                    country: 'NZL'
+                }
+            ],
+            [
+                // Tuesday
+                {
+                    start: '06:00',
+                    end: '13:00',
+                    country: 'GBR'
+                },
+                {
+                    start: '06:00',
+                    end: '11:00',
+                    country: 'ESP'
+                },
+                {
+                    start: '14:00',
+                    end: '15:00',
+                    country: 'ESP'
+                },
+                {
+                    start: '06:00',
+                    end: '11:00',
+                    country: 'DNK'
+                },
+                {
+                    start: '14:00',
+                    end: '15:00',
+                    country: 'DNK'
+                },
+                {
+                    start: '06:00',
+                    end: '11:00',
+                    country: 'IRL'
+                },
+                {
+                    start: '14:00',
+                    end: '15:00',
+                    country: 'IRL'
+                },
+                {
+                    start: '06:00',
+                    end: '11:00',
+                    country: 'FRA'
+                },
+                {
+                    start: '14:00',
+                    end: '15:00',
+                    country: 'FRA'
+                },
+                {
+                    start: '06:00',
+                    end: '11:00',
+                    country: 'NOR'
+                },
+                {
+                    start: '14:00',
+                    end: '15:00',
+                    country: 'NOR'
+                },
+                {
+                    start: '06:00',
+                    end: '11:00',
+                    country: 'ITA'
+                },
+                {
+                    start: '14:00',
+                    end: '15:00',
+                    country: 'ITA'
+                },
+                {
+                    start: '04:00',
+                    end: '06:00',
+                    country: 'AUS'
+                },
+                {
+                    start: '04:00',
+                    end: '06:00',
+                    country: 'NZL'
+                },
+                {
+                    start: '13:00',
+                    end: '23:59',
+                    country: 'AUS'
+                },
+                {
+                    start: '13:00',
+                    end: '23:59',
+                    country: 'NZL'
+                },
+                {
+                    start: '00:00',
+                    end: '02:00',
+                    country: 'AUS'
+                },
+                {
+                    start: '00:00',
+                    end: '02:00',
+                    country: 'NZL'
+                }
+            ],
+            [
+                // Wednesday
+                {
+                    start: '06:00',
+                    end: '13:00',
+                    country: 'GBR'
+                },
+                {
+                    start: '06:00',
+                    end: '11:00',
+                    country: 'ESP'
+                },
+                {
+                    start: '14:00',
+                    end: '15:00',
+                    country: 'ESP'
+                },
+                {
+                    start: '06:00',
+                    end: '11:00',
+                    country: 'DNK'
+                },
+                {
+                    start: '14:00',
+                    end: '15:00',
+                    country: 'DNK'
+                },
+                {
+                    start: '06:00',
+                    end: '11:00',
+                    country: 'IRL'
+                },
+                {
+                    start: '14:00',
+                    end: '15:00',
+                    country: 'IRL'
+                },
+                {
+                    start: '06:00',
+                    end: '11:00',
+                    country: 'FRA'
+                },
+                {
+                    start: '14:00',
+                    end: '15:00',
+                    country: 'FRA'
+                },
+                {
+                    start: '06:00',
+                    end: '11:00',
+                    country: 'NOR'
+                },
+                {
+                    start: '14:00',
+                    end: '15:00',
+                    country: 'NOR'
+                },
+                {
+                    start: '06:00',
+                    end: '11:00',
+                    country: 'ITA'
+                },
+                {
+                    start: '14:00',
+                    end: '15:00',
+                    country: 'ITA'
+                },
+                {
+                    start: '04:00',
+                    end: '06:00',
+                    country: 'AUS'
+                },
+                {
+                    start: '04:00',
+                    end: '06:00',
+                    country: 'NZL'
+                },
+                {
+                    start: '13:00',
+                    end: '23:59',
+                    country: 'AUS'
+                },
+                {
+                    start: '13:00',
+                    end: '23:59',
+                    country: 'NZL'
+                },
+                {
+                    start: '00:00',
+                    end: '02:00',
+                    country: 'AUS'
+                },
+                {
+                    start: '00:00',
+                    end: '02:00',
+                    country: 'NZL'
+                }
+            ],
+            [
+                // Thursday
+                {
+                    start: '06:00',
+                    end: '13:00',
+                    country: 'GBR'
+                },
+                {
+                    start: '06:00',
+                    end: '11:00',
+                    country: 'ESP'
+                },
+                {
+                    start: '14:00',
+                    end: '15:00',
+                    country: 'ESP'
+                },
+                {
+                    start: '06:00',
+                    end: '11:00',
+                    country: 'DNK'
+                },
+                {
+                    start: '14:00',
+                    end: '15:00',
+                    country: 'DNK'
+                },
+                {
+                    start: '06:00',
+                    end: '11:00',
+                    country: 'IRL'
+                },
+                {
+                    start: '14:00',
+                    end: '15:00',
+                    country: 'IRL'
+                },
+                {
+                    start: '06:00',
+                    end: '11:00',
+                    country: 'FRA'
+                },
+                {
+                    start: '14:00',
+                    end: '15:00',
+                    country: 'FRA'
+                },
+                {
+                    start: '06:00',
+                    end: '11:00',
+                    country: 'NOR'
+                },
+                {
+                    start: '14:00',
+                    end: '15:00',
+                    country: 'NOR'
+                },
+                {
+                    start: '06:00',
+                    end: '11:00',
+                    country: 'ITA'
+                },
+                {
+                    start: '14:00',
+                    end: '15:00',
+                    country: 'ITA'
+                },
+                {
+                    start: '00:00',
+                    end: '02:00',
+                    country: 'AUS'
+                },
+                {
+                    start: '00:00',
+                    end: '02:00',
+                    country: 'NZL'
+                },
+                {
+                    start: '06:00',
+                    end: '08:00',
+                    country: 'AUS'
+                },
+                {
+                    start: '06:00',
+                    end: '08:00',
+                    country: 'NZL'
+                },
+                {
+                    start: '13:00',
+                    end: '15:00',
+                    country: 'AUS'
+                },
+                {
+                    start: '13:00',
+                    end: '15:00',
+                    country: 'NZL'
+                }
+            ],
+            [
+                // Friday
+            ],
+            [
+                // Saturday
+            ]
+        ];
+
+        var offices = [
+            {
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: 51.4516607,
+                longitude: -2.599413,
+                borderWidth: 0,
+                name: 'Bristol'
+            },
+            {
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: 51.516321,
+                longitude: -0.1052626,
+                borderWidth: 0,
+                name: 'London'
+            },
+            {
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: 51.6582636,
+                longitude: -0.2702409,
+                borderWidth: 0,
+                name: 'Borehamwood'
+            },
+            {
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: 53.3187668,
+                longitude: -6.2158948,
+                borderWidth: 0,
+                name: 'Dublin'
+            },
+            {
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: 48.832653,
+                longitude: 2.2745108,
+                borderWidth: 0,
+                name: 'Paris'
+            },
+            {
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: 40.444133,
+                longitude: -3.6581953,
+                borderWidth: 0,
+                name: 'Madrid'
+            },
+            {
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: 45.4725795,
+                longitude: 9.1571298,
+                borderWidth: 0,
+                name: 'Milan'
+            },
+            {
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: 55.7087167,
+                longitude: 12.5602227,
+                borderWidth: 0,
+                name: 'Copenhagen'
+            },
+            {
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: 56.1389854,
+                longitude: 10.1699192,
+                borderWidth: 0,
+                name: 'Aarhus'
+            },
+            {
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: 47.3725304,
+                longitude: 8.5279722,
+                borderWidth: 0,
+                name: 'Zurich'
+            },
+            {
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: 59.8939529,
+                longitude: 10.6450359,
+                borderWidth: 0,
+                name: 'Oslo'
+            },
+            {
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: -33.8708419,
+                longitude: 151.2051413,
+                borderWidth: 0,
+                name: 'Sydney'
+            },
+            {
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: -37.8772826,
+                longitude: 145.124359,
+                borderWidth: 0,
+                name: 'Mount Waverly'
+            },
+            {
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: -36.8621369,
+                longitude: 174.7372029,
+                borderWidth: 0,
+                name: 'Auckland'
+            },
+            {
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: -23.5432253,
+                longitude: -46.7357653,
+                borderWidth: 0,
+                name: 'Sao Paulo'
+            },
+            {
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: 43.6462565,
+                longitude: -79.3984558,
+                borderWidth: 0,
+                name: 'Toronto'
+            },
+            {
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: 49.8983662,
+                longitude: -97.1461043,
+                borderWidth: 0,
+                name: 'Winnipeg'
+            },
+            {
+                radius: 2,
+                fillKey: 'OFFICE',
+                latitude: 19.4301372,
+                longitude: -99.17133,
+                borderWidth: 0,
+                name: 'Mexico City'
+            },
+            {
+                radius: 2,
+                fillKey: 'CUSTOMER',
+                latitude: 51.0486,
+                longitude: -114.0708,
+                borderWidth: 0,
+                name: 'Calgary'
+            },
+            {
+                radius: 2,
+                fillKey: 'CUSTOMER',
+                latitude: 45.5017,
+                longitude: -73.5673,
+                borderWidth: 0,
+                name: 'Montreal'
+            },
+            {
+                radius: 2,
+                fillKey: 'CUSTOMER',
+                latitude: 52.9399,
+                longitude: -73.5491,
+                borderWidth: 0,
+                name: 'Quebec'
+            },
+            {
+                radius: 2,
+                fillKey: 'CUSTOMER',
+                latitude: 49.2827,
+                longitude: -123.1207,
+                borderWidth: 0,
+                name: 'Vancouver'
+            },
+            {
+                radius: 2,
+                fillKey: 'CUSTOMER',
+                latitude: -31.9505,
+                longitude: 115.8605,
+                borderWidth: 0,
+                name: 'Perth'
+            },
+            {
+                radius: 2,
+                fillKey: 'CUSTOMER',
+                latitude: -34.9285,
+                longitude: 138.6007,
+                borderWidth: 0,
+                name: 'Adelaide'
+            },
+            {
+                radius: 2,
+                fillKey: 'CUSTOMER',
+                latitude: -41.2865,
+                longitude: 174.7762,
+                borderWidth: 0,
+                name: 'Wellington'
+            },
+            {
+                radius: 2,
+                fillKey: 'RANDOM',
+                latitude: 35.9426466,
+                longitude: 14.2382668,
+                borderWidth: 0,
+                name: 'Atlantis'
+            },
+            {
+                radius: 2,
+                fillKey: 'RANDOM',
+                latitude: 30.016858,
+                longitude: 31.1546237,
+                borderWidth: 0,
+                name: 'Stargate Found'
+            }
+        ];
+
+        var map;
+
+        function draw() {
+            map = new window.Datamap({
+                element: document.getElementById('container'),
+                fills: {
+                    OK: '#0e97dd',
+                    CLOSED: '#400000',
+                    OFFICE: '#ffffff',
+                    CUSTOMER: '#ffff00',
+                    RANDOM: '#ff8080',
+                    defaultFill: '#000000'
+                },
+                geographyConfig: {
+                    highlightOnHover: false,
+                    popupOnHover: false,
+                    borderColor: '#14517a'
+                },
+                projection: 'mercator'
+            });
+
+            map.bubbles(offices);
+        }
+
+        function getHour(time) {
+            return parseInt(time.substr(0, 2));
+        }
+
+        function getMinute(time) {
+            return parseInt(time.substr(3, 2));
+        }
+
+        function pad(num) {
+            var ret = '' + num;
+            if (ret.length === 1) {
+                return '0' + num;
+            }
+            return num;
+        }
+
+        function formatSeconds(seconds) {
+            return pad(Math.floor(seconds / 3600)) +
+                ':' +
+                pad(Math.floor(seconds % 3600 / 60)) +
+                '.' +
+                pad(seconds % 60);
+        }
+
+        function displayCountry(country) {
+            switch (country) {
+                case 'AUS':
+                    return 'AU';
+                case 'DNK':
+                    return 'DK';
+                case 'ESP':
+                    return 'ES';
+                case 'FRA':
+                    return 'FR';
+                case 'IRL':
+                    return 'IE';
+                case 'ITA':
+                    return 'IT';
+                case 'NOR':
+                    return 'NO';
+                case 'NZL':
+                    return 'NZ';
+                default:
+                    return 'UK';
+            }
+        }
+
+        var dots = [];
+
+        function setBoomTime() {
+            var now = new Date();
+            var ttl = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 17, 0, 0, 0) - now;
+            if (ttl < 0) {
+                ttl += 86400000;
+            }
+            setTimeout(function() {
+                explodeAll();
+                setBoomTime();
+            },
+                ttl);
+        }
+
+        function init() {
+            var i;
+
+            var circles = document.getElementsByTagName('circle');
+            for (i = 0; i < offices.length; i++) {
+                var office = offices[i];
+                for (var c = 0; c < circles.length; c++) {
+                    var data = circles[c].getAttribute('data-info');
+
+                    if (data.indexOf(office.name) > -1) {
+                        var point = new Object();
+                        point.x = circles[c].getAttribute('cx');
+                        point.y = circles[c].getAttribute('cy');
+
+                        dots.push(point);
+                    }
+                }
+            }
+
+            for (i = 0; i < countries.length; i++) {
+                var div = document.createElement('div');
+                div.setAttribute('class', 'country');
+                div.setAttribute('id', countries[i]);
+                document.getElementById('info').appendChild(div);
+
+                div.innerHTML = '<pre> <span style="color: #19a7e9;">' + displayCountry(countries[i]) + '</pre><pre></pre>';
+            }
+
+            setBoomTime();
+
+            document.getElementById('container').onclick = function(e) {
+                explode(e.pageX, e.pageY);
+            }
+        }
+
+        var boomCount = 0;
+
+        function explode(x, y) {
+            var img = new Image();
+            img.setAttribute('class', 'boom');
+            img.setAttribute('style', 'left: ' + (x - 50) + 'px; top: ' + (y - 50) + 'px; display: block;');
+            img.setAttribute('src', 'img/explosion.gif?bc=' + boomCount);
+            boomCount++;
+
+            document.getElementById('container').appendChild(img);
+
+            setTimeout(function () {
+                document.getElementById('container').removeChild(img);
+            }, 7300);
+        }
+
+        function explodeWithDelay(x, y, delay) {
+            setTimeout(function() {
+                    explode(x, y);
+                },
+                delay);
+        }
+
+        function explodeAll() {
+            var wait = 0;
+            for (var i = 0; i < dots.length; i++) {
+                explodeWithDelay(dots[i].x, dots[i].y, wait);
+                wait += 1000 + Math.random() * 1000;
+            }
+        }
+
+        var scanY = 0;
+
+        function randomizeScanExplode() {
+            var secs = 43200 + Math.random() * 86400;
+            setTimeout(function() {
+                    scanExplode();
+                },
+                secs * 1000);
+        }
+
+        function scanLine() {
+            document.getElementById('scan').setAttribute("style", "display: block; top: " + scanY + "px;");
+            scanY++;
+            for (var c = 0; c < dots.length; c++) {
+                if (Math.floor(dots[c].y) === scanY) {
+                    explode(dots[c].x, scanY);
+                }
+            }
+            if (scanY < window.innerHeight) {
+                setTimeout(function() {
+                        scanLine();
+                    },
+                    100);
+            } else {
+                document.getElementById('scan').setAttribute("style", "display: none;");
+            }
+        }
+
+        function scanExplode() {
+            scanY = 0;
+            scanLine();
+        }
+
+        function formatTime(time, country) {
+            var zone;
+            switch (country) {
+                case 'AUS':
+                    zone = 'Australia/Sydney';
+                    break;
+                case 'DNK':
+                    zone = 'Europe/Copenhagen';
+                    break;
+                case 'ESP':
+                    zone = 'Europe/Madrid';
+                    break;
+                case 'FRA':
+                    zone = 'Europe/Paris';
+                    break;
+                case 'ITA':
+                    zone = 'Europe/Rome';
+                    break;
+                case 'NOR':
+                    zone = 'Europe/Oslo';
+                    break;
+                case 'NZL':
+                    zone = 'Pacific/Auckland';
+                    break;
+                default:
+                    zone = 'Europe/London';
+                    break;
+            }
+
+            var m = window.moment(time);
+
+            return m.tz(zone).format('HH:mm A');
+        }
+
+        function getXPositionForTime(seconds) {
+            var width = window.innerWidth;
+
+            var x = (width / 86400) * seconds % width;
+            if (x < 0) {
+                x += width;
+            }
+            x = width - x;
+
+            return x;
+        }
+
+        function update() {
+            var openCountries = [];
+
+            var info = [];
+
+            var date = new Date();
+
+            var day = date.getDay();
+
+            var dayWindows = windows[day];
+
+            var now = date.getUTCHours() * 3600 + date.getUTCMinutes() * 60 + date.getSeconds();
+
+            var i, start, slot;
+
+            for (i = 0; i < dayWindows.length; i++) {
+                slot = dayWindows[i];
+
+                start = getHour(slot.start) * 3600 + getMinute(slot.start) * 60;
+                var end = getHour(slot.end) * 3600 + getMinute(slot.end) * 60;
+
+                if (now >= start && now <= end) {
+                    map.updateChoropleth(JSON.parse('{ "' + slot.country + '": { "fillKey": "OK" }}'));
+                    info.push(JSON.parse(' { "country": "' +
+                        slot.country +
+                        '", "remaining": ' +
+                        (end - now) +
+                        ' }'));
+                    if (!openCountries.includes(slot.country)) {
+                        openCountries.push(slot.country);
+                    }
+                }
+            }
+
+            var div;
+
+            for (i = 0; i < countries.length; i++) {
+                if (!openCountries.includes(countries[i])) {
+                    map.updateChoropleth(JSON.parse('{ "' + countries[i] + '": { "fillKey": "CLOSED" }}'));
+                }
+            }
+
+            for (i = 0; i < countries.length; i++) {
+                div = document.getElementById(countries[i]);
+                if (div) {
+                    div.children[1].innerHTML = '';
+                }
+            }
+
+            var pre;
+
+            for (i = 0; i < info.length; i++) {
+                var detail = info[i];
+
+                div = document.getElementById(detail.country);
+
+                pre = div.children[1].innerHTML;
+                var color = '#00e800';
+                if (detail.remaining < 600) {
+                    var g = Math.floor((232 / 600) * detail.remaining);
+                    var r = 232 - g;
+                    color = '#' + pad(r.toString(16)) + pad(g.toString(16)) + '00';
+                }
+                pre = pre + '<span style="color: ' + color + ';"> ' + formatSeconds(detail.remaining) + '</span>\n';
+                div.children[1].innerHTML = pre;
+            }
+
+            var country;
+
+            for (i = 0; i < countries.length; i++) {
+                country = countries[i];
+
+                if (!openCountries.includes(country)) {
+                    div = document.getElementById(country);
+
+                    var next = 0;
+
+                    var x;
+
+                    dayWindows = windows[day];
+                    for (x = 0; x < dayWindows.length; x++) {
+                        slot = dayWindows[x];
+                        if (slot.country === country) {
+                            start = getHour(slot.start) * 3600 + getMinute(slot.start) * 60;
+
+                            if (start > now) {
+                                next = start - now;
+                            }
+                        }
+                    }
+
+                    if (next === 0) {
+                        next = 86400 - now;
+
+                        loop1:
+                        for (var d = day + 1; d < day + 7; d++) {
+                            dayWindows = windows[d % 7];
+
+                            loop2:
+                            for (x = 0; x < dayWindows.length; x++) {
+                                slot = dayWindows[x];
+                                if (slot.country === country) {
+                                    start = getHour(slot.start) * 3600 + getMinute(slot.start) * 60;
+
+                                    next += start;
+                                    break loop1;
+                                }
+                            }
+
+                            next += 86400;
+                        }
+                    }
+
+                    pre = div.children[1].innerHTML;
+                    if (next === 2147483647) {
+                        pre = pre + '<span style="color: #e80000;"> ?</span>\n';
+                    } else {
+                        pre = pre + '<span style="color: #e80000;">-' + formatSeconds(next) + '</span>\n';
+                    }
+                    div.children[1].innerHTML = pre;
+                }
+            }
+
+            for (i = 0; i < countries.length; i++) {
+                country = countries[i];
+
+                div = document.getElementById(country);
+                pre = div.children[1].innerHTML;
+                pre = pre + '\n<span style="color: #19a7e9;"> ' + formatTime(date, country) + '</span>\n';
+                div.children[1].innerHTML = pre;
+            }
+
+            now = date.getHours() * 3600 + date.getMinutes() * 60 + date.getSeconds();
+
+            var middayLine = document.getElementById('time');
+            var left = getXPositionForTime(now + 650);
+            middayLine.setAttribute("style", "left: " + left + 'px;');
+
+            var beerLine = document.getElementById('beer');
+            left = getXPositionForTime(now - 17350);
+            beerLine.setAttribute("style", "left: " + left + 'px;');
+        }
+
+        draw();
+
+        init();
+
+        update();
+
+        setInterval(update, 500);
+
+<<<<<<< HEAD
+        var scan = 0;
+
+        function updateScan() {
+            var scanLine = document.getElementById('scan');
+            scanLine.setAttribute("style", "top: " + scan + "px;");
+            scan++;
+            if (scan > window.innerHeight) {
+                scan = 0;
+            }
+        }
+
+        setInterval(updateScan, 20);
+=======
+        randomizeScanExplode();
+>>>>>>> 59571b6a25d5352045daacbe1548b423e0b95212
+    </script>
+</body>
+</html>
