@@ -102,7 +102,7 @@
     <div id="time"></div>
     <div id="beer"></div>
     <div id="alarm"></div>
-    <div id="scan"></div>
+<!--    <div id="scan"></div>-->
     <div class="info" id="info"></div>
     <div class="legend">
         <pre><span style="color: #ffc300">&#xff0d;</span> <span style="color: #19a7e9">High noon</span>
@@ -766,18 +766,30 @@
             return m.tz(zone).format('HH:mm A');
         }
 
+        function getXPositionForTime(seconds) {
+            var width = window.innerWidth;
+
+            var x = (width / 86400) * seconds % 1000;
+            if (x < 0) {
+                x += width;
+            }
+            x = width - x;
+
+            return x;
+        }
+
         function update() {
             var openCountries = [];
 
             var info = [];
 
-            var utc = new Date();
+            var date = new Date();
 
-            var day = utc.getDay();
+            var day = date.getDay();
 
             var dayWindows = windows[day];
 
-            var now = utc.getUTCHours() * 3600 + utc.getUTCMinutes() * 60 + utc.getSeconds();
+            var now = date.getUTCHours() * 3600 + date.getUTCMinutes() * 60 + date.getSeconds();
 
             var i, start, slot;
 
@@ -894,16 +906,18 @@
 
                 div = document.getElementById(country);
                 pre = div.children[1].innerHTML;
-                pre = pre + '\n<span style="color: #19a7e9;"> ' + formatTime(utc, country) + '</span>\n';
+                pre = pre + '\n<span style="color: #19a7e9;"> ' + formatTime(date, country) + '</span>\n';
                 div.children[1].innerHTML = pre;
             }
 
+            now = date.getHours() * 3600 + date.getMinutes() * 60 + date.getSeconds();
+
             var middayLine = document.getElementById('time');
-            var left = ((window.innerWidth / 86400) * (now - 650)) % window.innerWidth;
+            var left = getXPositionForTime(now + 650);
             middayLine.setAttribute("style", "left: " + left + 'px;');
 
             var beerLine = document.getElementById('beer');
-            left = ((window.innerWidth / 86400) * (now - 18650)) % window.innerWidth;
+            left = getXPositionForTime(now - 18650);
             console.log(left);
             beerLine.setAttribute("style", "left: " + left + 'px;');
         }
@@ -918,16 +932,16 @@
 
         var scan = 0;
 
-        function updateScan() {
-            var scanLine = document.getElementById('scan');
-            scanLine.setAttribute("style", "top: " + scan + "px;");
-            scan++;
-            if (scan > window.innerHeight) {
-                scan = 0;
-            }
-        }
+        //function updateScan() {
+        //    var scanLine = document.getElementById('scan');
+        //    scanLine.setAttribute("style", "top: " + scan + "px;");
+        //    scan++;
+        //    if (scan > window.innerHeight) {
+        //        scan = 0;
+        //    }
+        //}
 
-        setInterval(updateScan, 1);
+        //setInterval(updateScan, 1);
     </script>
 </body>
 </html>
