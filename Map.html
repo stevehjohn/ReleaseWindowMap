@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title>Release Window Map</title>
+    <link rel="shortcut icon" href="favicon.ico">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <!-- ReSharper disable Html.PathError -->
     <script src="scripts/d3.min.js"></script>
@@ -81,6 +82,7 @@
             height: 1px;
             background-color: #19a7e9;
             opacity: 0.2;
+            display: none;
         }
 
         pre {
@@ -94,6 +96,14 @@
             top: 60%;
             background-color: rgba(80, 80, 80, 0.31);
             padding: 4px 20px;
+        }
+
+        img.boom {
+            position: absolute;
+            display: none;
+            z-index: 99999;
+            width: 100px;
+            height: 100px;
         }
     </style>
 </head>
@@ -117,68 +127,68 @@
             [
                 // Monday
                 {
-                    start: '07:00',
-                    end: '14:00',
+                    start: '06:00',
+                    end: '13:00',
                     country: 'GBR'
                 },
                 {
-                    start: '07:00',
-                    end: '12:00',
+                    start: '06:00',
+                    end: '11:00',
                     country: 'ESP'
                 },
                 {
-                    start: '15:00',
-                    end: '16:00',
+                    start: '14:00',
+                    end: '15:00',
                     country: 'ESP'
                 },
                 {
-                    start: '07:00',
-                    end: '12:00',
+                    start: '06:00',
+                    end: '11:00',
                     country: 'DNK'
                 },
                 {
-                    start: '15:00',
-                    end: '16:00',
+                    start: '14:00',
+                    end: '15:00',
                     country: 'DNK'
                 },
                 {
-                    start: '07:00',
-                    end: '12:00',
+                    start: '06:00',
+                    end: '11:00',
                     country: 'IRL'
                 },
                 {
-                    start: '15:00',
-                    end: '16:00',
+                    start: '14:00',
+                    end: '15:00',
                     country: 'IRL'
                 },
                 {
-                    start: '07:00',
-                    end: '12:00',
+                    start: '06:00',
+                    end: '11:00',
                     country: 'FRA'
                 },
                 {
-                    start: '15:00',
-                    end: '16:00',
+                    start: '14:00',
+                    end: '15:00',
                     country: 'FRA'
                 },
                 {
-                    start: '07:00',
-                    end: '12:00',
+                    start: '06:00',
+                    end: '11:00',
                     country: 'NOR'
                 },
                 {
-                    start: '15:00',
-                    end: '16:00',
+                    start: '14:00',
+                    end: '15:00',
                     country: 'NOR'
                 },
                 {
-                    start: '07:00',
-                    end: '12:00',
+                    start: '06:00',
+                    end: '11:00',
                     country: 'ITA'
                 },
                 {
-                    start: '15:00',
-                    end: '16:00',
+                    start: '14:00',
+                    end: '15:00',
                     country: 'ITA'
                 },
                 {
@@ -205,68 +215,68 @@
             [
                 // Tuesday
                 {
-                    start: '07:00',
-                    end: '14:00',
+                    start: '06:00',
+                    end: '13:00',
                     country: 'GBR'
                 },
                 {
-                    start: '07:00',
-                    end: '12:00',
+                    start: '06:00',
+                    end: '11:00',
                     country: 'ESP'
                 },
                 {
-                    start: '15:00',
-                    end: '16:00',
+                    start: '14:00',
+                    end: '15:00',
                     country: 'ESP'
                 },
                 {
-                    start: '07:00',
-                    end: '12:00',
+                    start: '06:00',
+                    end: '11:00',
                     country: 'DNK'
                 },
                 {
-                    start: '15:00',
-                    end: '16:00',
+                    start: '14:00',
+                    end: '15:00',
                     country: 'DNK'
                 },
                 {
-                    start: '07:00',
-                    end: '12:00',
+                    start: '06:00',
+                    end: '11:00',
                     country: 'IRL'
                 },
                 {
-                    start: '15:00',
-                    end: '16:00',
+                    start: '14:00',
+                    end: '15:00',
                     country: 'IRL'
                 },
                 {
-                    start: '07:00',
-                    end: '12:00',
+                    start: '06:00',
+                    end: '11:00',
                     country: 'FRA'
                 },
                 {
-                    start: '15:00',
-                    end: '16:00',
+                    start: '14:00',
+                    end: '15:00',
                     country: 'FRA'
                 },
                 {
-                    start: '07:00',
-                    end: '12:00',
+                    start: '06:00',
+                    end: '11:00',
                     country: 'NOR'
                 },
                 {
-                    start: '15:00',
-                    end: '16:00',
+                    start: '14:00',
+                    end: '15:00',
                     country: 'NOR'
                 },
                 {
-                    start: '07:00',
-                    end: '12:00',
+                    start: '06:00',
+                    end: '11:00',
                     country: 'ITA'
                 },
                 {
-                    start: '15:00',
-                    end: '16:00',
+                    start: '14:00',
+                    end: '15:00',
                     country: 'ITA'
                 },
                 {
@@ -303,68 +313,68 @@
             [
                 // Wednesday
                 {
-                    start: '07:00',
-                    end: '14:00',
+                    start: '06:00',
+                    end: '13:00',
                     country: 'GBR'
                 },
                 {
-                    start: '07:00',
-                    end: '12:00',
+                    start: '06:00',
+                    end: '11:00',
                     country: 'ESP'
                 },
                 {
-                    start: '15:00',
-                    end: '16:00',
+                    start: '14:00',
+                    end: '15:00',
                     country: 'ESP'
                 },
                 {
-                    start: '07:00',
-                    end: '12:00',
+                    start: '06:00',
+                    end: '11:00',
                     country: 'DNK'
                 },
                 {
-                    start: '15:00',
-                    end: '16:00',
+                    start: '14:00',
+                    end: '15:00',
                     country: 'DNK'
                 },
                 {
-                    start: '07:00',
-                    end: '12:00',
+                    start: '06:00',
+                    end: '11:00',
                     country: 'IRL'
                 },
                 {
-                    start: '15:00',
-                    end: '16:00',
+                    start: '14:00',
+                    end: '15:00',
                     country: 'IRL'
                 },
                 {
-                    start: '07:00',
-                    end: '12:00',
+                    start: '06:00',
+                    end: '11:00',
                     country: 'FRA'
                 },
                 {
-                    start: '15:00',
-                    end: '16:00',
+                    start: '14:00',
+                    end: '15:00',
                     country: 'FRA'
                 },
                 {
-                    start: '07:00',
-                    end: '12:00',
+                    start: '06:00',
+                    end: '11:00',
                     country: 'NOR'
                 },
                 {
-                    start: '15:00',
-                    end: '16:00',
+                    start: '14:00',
+                    end: '15:00',
                     country: 'NOR'
                 },
                 {
-                    start: '07:00',
-                    end: '12:00',
+                    start: '06:00',
+                    end: '11:00',
                     country: 'ITA'
                 },
                 {
-                    start: '15:00',
-                    end: '16:00',
+                    start: '14:00',
+                    end: '15:00',
                     country: 'ITA'
                 },
                 {
@@ -401,68 +411,68 @@
             [
                 // Thursday
                 {
-                    start: '07:00',
-                    end: '14:00',
+                    start: '06:00',
+                    end: '13:00',
                     country: 'GBR'
                 },
                 {
-                    start: '07:00',
-                    end: '12:00',
+                    start: '06:00',
+                    end: '11:00',
                     country: 'ESP'
                 },
                 {
-                    start: '15:00',
-                    end: '16:00',
+                    start: '14:00',
+                    end: '15:00',
                     country: 'ESP'
                 },
                 {
-                    start: '07:00',
-                    end: '12:00',
+                    start: '06:00',
+                    end: '11:00',
                     country: 'DNK'
                 },
                 {
-                    start: '15:00',
-                    end: '16:00',
+                    start: '14:00',
+                    end: '15:00',
                     country: 'DNK'
                 },
                 {
-                    start: '07:00',
-                    end: '12:00',
+                    start: '06:00',
+                    end: '11:00',
                     country: 'IRL'
                 },
                 {
-                    start: '15:00',
-                    end: '16:00',
+                    start: '14:00',
+                    end: '15:00',
                     country: 'IRL'
                 },
                 {
-                    start: '07:00',
-                    end: '12:00',
+                    start: '06:00',
+                    end: '11:00',
                     country: 'FRA'
                 },
                 {
-                    start: '15:00',
-                    end: '16:00',
+                    start: '14:00',
+                    end: '15:00',
                     country: 'FRA'
                 },
                 {
-                    start: '07:00',
-                    end: '12:00',
+                    start: '06:00',
+                    end: '11:00',
                     country: 'NOR'
                 },
                 {
-                    start: '15:00',
-                    end: '16:00',
+                    start: '14:00',
+                    end: '15:00',
                     country: 'NOR'
                 },
                 {
-                    start: '07:00',
-                    end: '12:00',
+                    start: '06:00',
+                    end: '11:00',
                     country: 'ITA'
                 },
                 {
-                    start: '15:00',
-                    end: '16:00',
+                    start: '14:00',
+                    end: '15:00',
                     country: 'ITA'
                 },
                 {
@@ -506,148 +516,220 @@
 
         var offices = [
             {
-                // UK - Bristol
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: 51.4516607,
                 longitude: -2.599413,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'Bristol'
             },
             {
-                // UK - London
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: 51.516321,
                 longitude: -0.1052626,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'London'
             },
             {
-                // UK - Borehamwood
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: 51.6582636,
                 longitude: -0.2702409,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'Borehamwood'
             },
             {
-                // Ireland
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: 53.3187668,
                 longitude: -6.2158948,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'Dublin'
             },
             {
-                // France
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: 48.832653,
                 longitude: 2.2745108,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'Paris'
             },
             {
-                // Spain
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: 40.444133,
                 longitude: -3.6581953,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'Madrid'
             },
             {
-                // Italy
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: 45.4725795,
                 longitude: 9.1571298,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'Milan'
             },
             {
-                // Denmark - Copenhagen
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: 55.7087167,
                 longitude: 12.5602227,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'Copenhagen'
             },
             {
-                // Denmark - Aarhus
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: 56.1389854,
                 longitude: 10.1699192,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'Aarhus'
             },
             {
-                // Switzerland
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: 47.3725304,
                 longitude: 8.5279722,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'Zurich'
             },
             {
-                // Norway
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: 59.8939529,
                 longitude: 10.6450359,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'Oslo'
             },
             {
-                // Australia - Sydney
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: -33.8708419,
                 longitude: 151.2051413,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'Sydney'
             },
             {
-                // Australia - Mount Waverly
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: -37.8772826,
                 longitude: 145.124359,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'Mount Waverly'
             },
             {
-                // New Zealand
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: -36.8621369,
                 longitude: 174.7372029,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'Auckland'
             },
             {
-                // Brazil
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: -23.5432253,
                 longitude: -46.7357653,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'Sao Paulo'
             },
             {
-                // Canada - Toronto
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: 43.6462565,
                 longitude: -79.3984558,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'Toronto'
             },
             {
-                // Canada - Winnipeg
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: 49.8983662,
                 longitude: -97.1461043,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'Winnipeg'
             },
             {
-                // Canada - Winnipeg
                 radius: 2,
                 fillKey: 'OFFICE',
                 latitude: 19.4301372,
                 longitude: -99.17133,
-                borderWidth: 0
+                borderWidth: 0,
+                name: 'Mexico City'
+            },
+            {
+                radius: 2,
+                fillKey: 'CUSTOMER',
+                latitude: 51.0486,
+                longitude: -114.0708,
+                borderWidth: 0,
+                name: 'Calgary'
+            },
+            {
+                radius: 2,
+                fillKey: 'CUSTOMER',
+                latitude: 45.5017,
+                longitude: -73.5673,
+                borderWidth: 0,
+                name: 'Montreal'
+            },
+            {
+                radius: 2,
+                fillKey: 'CUSTOMER',
+                latitude: 52.9399,
+                longitude: -73.5491,
+                borderWidth: 0,
+                name: 'Quebec'
+            },
+            {
+                radius: 2,
+                fillKey: 'CUSTOMER',
+                latitude: 49.2827,
+                longitude: -123.1207,
+                borderWidth: 0,
+                name: 'Vancouver'
+            },
+            {
+                radius: 2,
+                fillKey: 'CUSTOMER',
+                latitude: -31.9505,
+                longitude: 115.8605,
+                borderWidth: 0,
+                name: 'Perth'
+            },
+            {
+                radius: 2,
+                fillKey: 'CUSTOMER',
+                latitude: -34.9285,
+                longitude: 138.6007,
+                borderWidth: 0,
+                name: 'Adelaide'
+            },
+            {
+                radius: 2,
+                fillKey: 'CUSTOMER',
+                latitude: -41.2865,
+                longitude: 174.7762,
+                borderWidth: 0,
+                name: 'Wellington'
+            },
+            {
+                radius: 2,
+                fillKey: 'RANDOM',
+                latitude: 35.9426466,
+                longitude: 14.2382668,
+                borderWidth: 0,
+                name: 'Atlantis'
+            },
+            {
+                radius: 2,
+                fillKey: 'RANDOM',
+                latitude: 30.016858,
+                longitude: 31.1546237,
+                borderWidth: 0,
+                name: 'Stargate Found'
             }
         ];
 
@@ -660,6 +742,8 @@
                     OK: '#0e97dd',
                     CLOSED: '#400000',
                     OFFICE: '#ffffff',
+                    CUSTOMER: '#ffff00',
+                    RANDOM: '#ff8080',
                     defaultFill: '#000000'
                 },
                 geographyConfig: {
@@ -720,8 +804,41 @@
             }
         }
 
+        var dots = [];
+
+        function setBoomTime() {
+            var now = new Date();
+            var ttl = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 17, 0, 0, 0) - now;
+            if (ttl < 0) {
+                ttl += 86400000;
+            }
+            setTimeout(function() {
+                explodeAll();
+                setBoomTime();
+            },
+                ttl);
+        }
+
         function init() {
-            for (var i = 0; i < countries.length; i++) {
+            var i;
+
+            var circles = document.getElementsByTagName('circle');
+            for (i = 0; i < offices.length; i++) {
+                var office = offices[i];
+                for (var c = 0; c < circles.length; c++) {
+                    var data = circles[c].getAttribute('data-info');
+
+                    if (data.indexOf(office.name) > -1) {
+                        var point = new Object();
+                        point.x = circles[c].getAttribute('cx');
+                        point.y = circles[c].getAttribute('cy');
+
+                        dots.push(point);
+                    }
+                }
+            }
+
+            for (i = 0; i < countries.length; i++) {
                 var div = document.createElement('div');
                 div.setAttribute('class', 'country');
                 div.setAttribute('id', countries[i]);
@@ -729,6 +846,76 @@
 
                 div.innerHTML = '<pre> <span style="color: #19a7e9;">' + displayCountry(countries[i]) + '</pre><pre></pre>';
             }
+
+            setBoomTime();
+
+            document.getElementById('container').onclick = function(e) {
+                explode(e.pageX, e.pageY);
+            }
+        }
+
+        var boomCount = 0;
+
+        function explode(x, y) {
+            var img = new Image();
+            img.setAttribute('class', 'boom');
+            img.setAttribute('style', 'left: ' + (x - 50) + 'px; top: ' + (y - 50) + 'px; display: block;');
+            img.setAttribute('src', 'img/explosion.gif?bc=' + boomCount);
+            boomCount++;
+
+            document.getElementById('container').appendChild(img);
+
+            setTimeout(function () {
+                document.getElementById('container').removeChild(img);
+            }, 7300);
+        }
+
+        function explodeWithDelay(x, y, delay) {
+            setTimeout(function() {
+                    explode(x, y);
+                },
+                delay);
+        }
+
+        function explodeAll() {
+            var wait = 0;
+            for (var i = 0; i < dots.length; i++) {
+                explodeWithDelay(dots[i].x, dots[i].y, wait);
+                wait += 1000 + Math.random() * 1000;
+            }
+        }
+
+        var scanY = 0;
+
+        function randomizeScanExplode() {
+            var secs = 43200 + Math.random() * 86400;
+            setTimeout(function() {
+                    scanExplode();
+                },
+                secs * 1000);
+        }
+
+        function scanLine() {
+            document.getElementById('scan').setAttribute("style", "display: block; top: " + scanY + "px;");
+            scanY++;
+            for (var c = 0; c < dots.length; c++) {
+                if (Math.floor(dots[c].y) === scanY) {
+                    explode(dots[c].x, scanY);
+                }
+            }
+            if (scanY < window.innerHeight) {
+                setTimeout(function() {
+                        scanLine();
+                    },
+                    100);
+            } else {
+                document.getElementById('scan').setAttribute("style", "display: none;");
+            }
+        }
+
+        function scanExplode() {
+            scanY = 0;
+            scanLine();
         }
 
         function formatTime(time, country) {
@@ -765,18 +952,30 @@
             return m.tz(zone).format('HH:mm A');
         }
 
+        function getXPositionForTime(seconds) {
+            var width = window.innerWidth;
+
+            var x = (width / 86400) * seconds % width;
+            if (x < 0) {
+                x += width;
+            }
+            x = width - x;
+
+            return x;
+        }
+
         function update() {
             var openCountries = [];
 
             var info = [];
 
-            var utc = new Date();
+            var date = new Date();
 
-            var day = utc.getDay();
+            var day = date.getDay();
 
             var dayWindows = windows[day];
 
-            var now = utc.getUTCHours() * 3600 + utc.getUTCMinutes() * 60 + utc.getSeconds();
+            var now = date.getUTCHours() * 3600 + date.getUTCMinutes() * 60 + date.getSeconds();
 
             var i, start, slot;
 
@@ -893,17 +1092,18 @@
 
                 div = document.getElementById(country);
                 pre = div.children[1].innerHTML;
-                pre = pre + '\n<span style="color: #19a7e9;"> ' + formatTime(utc, country) + '</span>\n';
+                pre = pre + '\n<span style="color: #19a7e9;"> ' + formatTime(date, country) + '</span>\n';
                 div.children[1].innerHTML = pre;
             }
 
+            now = date.getHours() * 3600 + date.getMinutes() * 60 + date.getSeconds();
+
             var middayLine = document.getElementById('time');
-            var left = ((window.innerWidth / 86400) * (now - 650)) % window.innerWidth;
+            var left = getXPositionForTime(now + 650);
             middayLine.setAttribute("style", "left: " + left + 'px;');
 
             var beerLine = document.getElementById('beer');
-            left = ((window.innerWidth / 86400) * (now - 18650)) % window.innerWidth;
-            console.log(left);
+            left = getXPositionForTime(now - 17350);
             beerLine.setAttribute("style", "left: " + left + 'px;');
         }
 
@@ -915,18 +1115,7 @@
 
         setInterval(update, 500);
 
-        var scan = 0;
-
-        function updateScan() {
-            var scanLine = document.getElementById('scan');
-            scanLine.setAttribute("style", "top: " + scan + "px;");
-            scan++;
-            if (scan > window.innerHeight) {
-                scan = 0;
-            }
-        }
-
-        setInterval(updateScan, 20);
+        randomizeScanExplode();
     </script>
 </body>
 </html>
