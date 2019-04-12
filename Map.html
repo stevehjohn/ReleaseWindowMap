@@ -3,7 +3,6 @@
 <head>
     <meta charset="utf-8" />
     <title>Release Window Map</title>
-    <link rel="shortcut icon" href="favicon.ico">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <!-- ReSharper disable Html.PathError -->
     <script src="scripts/d3.min.js"></script>
@@ -39,9 +38,9 @@
             margin-right: 20px;
         }
 
-            div.country:last-child {
-                margin-right: 10px;
-            }
+        div.country:last-child {
+            margin-right: 10px;
+        }
 
         div#container {
             width: 100%;
@@ -97,6 +96,20 @@
             height: 100px;
         }
 
+        img.burn {
+            position: absolute;
+            display: none;
+            z-index: 9999;
+            width: 100px;
+            height: 100px;
+            transition: opacity 60s linear;
+        }
+
+        img.fade {
+            /* ReSharper disable once CssBrowserCompatibility */
+            opacity: 0;
+        }
+
         div#version {
             position: absolute;
             right: 5px;
@@ -117,7 +130,7 @@
         <pre><span style="color: #ffc300">&#xff0d;</span> <span style="color: #19a7e9">High noon</span>
 <span style="color: #009900">&#xff0d;</span> <span style="color: #19a7e9">Beer o'clock</span></pre>
     </div>
-    <div id="version">1.0 2019.04.10</div>
+    <div id="version">1.1 2019.04.12</div>
     <script>
         var countries = ['AUS', 'DNK', 'ESP', 'FRA', 'GBR', 'IRL', 'ITA', 'NOR', 'NZL'];
 
@@ -858,6 +871,11 @@
         var boomCount = 0;
 
         function explode(x, y) {
+            var burn = new Image();
+            burn.setAttribute('class', 'burn');
+            burn.setAttribute('src', 'img/burn.png');
+            document.getElementById('container').appendChild(burn);
+
             var img = new Image();
             img.setAttribute('class', 'boom');
             img.setAttribute('style', 'left: ' + (x - 50) + 'px; top: ' + (y - 50) + 'px; display: block;');
@@ -866,9 +884,26 @@
 
             document.getElementById('container').appendChild(img);
 
-            setTimeout(function () {
-                document.getElementById('container').removeChild(img);
-            }, 7300);
+            setTimeout(function() {
+                    document.getElementById('container').removeChild(img);
+                },
+                7300);
+
+            setTimeout(function() {
+                    burn.setAttribute('style', 'left: ' + (x - 50) + 'px; top: ' + (y - 50) + 'px; display: block;');
+                },
+                5000);
+
+            setTimeout(function() {
+                    burn.classList.add('fade');
+                },
+                10000);
+
+
+            setTimeout(function() {
+                    document.getElementById('container').removeChild(burn);
+                },
+                80000);
         }
 
         function explodeWithDelay(x, y, delay) {
