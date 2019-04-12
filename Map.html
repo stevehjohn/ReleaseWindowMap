@@ -28,6 +28,7 @@
             display: flex;
             /* ReSharper disable once CssBrowserCompatibility */
             flex-wrap: wrap;
+            /* ReSharper disable once RequiresFallbackColor */
             background-color: rgba(80, 80, 80, 0.31);
         }
 
@@ -54,6 +55,7 @@
             width: 2px;
             background-color: #ffc300;
             opacity: 0.4;
+            z-index: 100000;
         }
 
         div#beer {
@@ -63,6 +65,7 @@
             width: 2px;
             background-color: #009900;
             opacity: 0.4;
+            z-index: 100000;
         }
 
         div#scan {
@@ -84,6 +87,7 @@
             position: absolute;
             left: 5%;
             top: 60%;
+            /* ReSharper disable once RequiresFallbackColor */
             background-color: rgba(80, 80, 80, 0.31);
             padding: 4px 20px;
         }
@@ -97,6 +101,15 @@
         }
 
         img.burn {
+            position: absolute;
+            display: none;
+            z-index: 9999;
+            width: 100px;
+            height: 100px;
+            transition: opacity 60s linear;
+        }
+
+        img.cloud {
             position: absolute;
             display: none;
             z-index: 9999;
@@ -130,7 +143,7 @@
         <pre><span style="color: #ffc300">&#xff0d;</span> <span style="color: #19a7e9">High noon</span>
 <span style="color: #009900">&#xff0d;</span> <span style="color: #19a7e9">Beer o'clock</span></pre>
     </div>
-    <div id="version">1.1 2019.04.12</div>
+    <div id="version">1.2 2019.04.12</div>
     <script>
         var countries = ['AUS', 'DNK', 'ESP', 'FRA', 'GBR', 'IRL', 'ITA', 'NOR', 'NZL'];
 
@@ -876,6 +889,12 @@
             burn.setAttribute('src', 'img/burn.png');
             document.getElementById('container').appendChild(burn);
 
+            var cloud = new Image();
+            cloud.setAttribute('class', 'cloud');
+            cloud.setAttribute('src', 'img/burn.png');
+            cloud.setAttribute('data-speed', Math.random() / 2);
+            document.getElementById('container').appendChild(cloud);
+
             var img = new Image();
             img.setAttribute('class', 'boom');
             img.setAttribute('style', 'left: ' + (x - 50) + 'px; top: ' + (y - 50) + 'px; display: block;');
@@ -891,17 +910,19 @@
 
             setTimeout(function() {
                     burn.setAttribute('style', 'left: ' + (x - 50) + 'px; top: ' + (y - 50) + 'px; display: block;');
+                    cloud.setAttribute('style', 'left: ' + (x - 50) + 'px; top: ' + (y - 50) + 'px; display: block;');
                 },
                 5000);
 
             setTimeout(function() {
                     burn.classList.add('fade');
+                    cloud.classList.add('fade');
                 },
-                10000);
-
+                8000);
 
             setTimeout(function() {
                     document.getElementById('container').removeChild(burn);
+                    document.getElementById('container').removeChild(cloud);
                 },
                 80000);
         }
@@ -952,6 +973,17 @@
         function scanExplode() {
             scanY = 0;
             scanLine();
+        }
+
+        function drift() {
+            var clouds = document.getElementsByClassName('cloud');
+
+            for (var i = 0; i < clouds.length; i++) {
+                var cloud = clouds[i];
+                if (cloud.offsetLeft !== 0) {
+                    cloud.style.left = (parseInt(cloud.style.left) - cloud.getAttribute('data-speed')) + 'px';
+                }
+            }
         }
 
         function formatTime(time, country) {
@@ -1150,6 +1182,8 @@
         update();
 
         setInterval(update, 500);
+
+        setInterval(drift, 50);
 
         randomizeScanExplode();
     </script>
