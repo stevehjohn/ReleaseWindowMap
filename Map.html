@@ -1175,6 +1175,20 @@
             beerLine.setAttribute("style", "left: " + left + 'px;');
         }
 
+        window.onkeyup = function (e) {
+            if (e.key.toLowerCase() === 's') {
+                scanExplode();
+            } else if (e.key.toLowerCase() === 'a') {
+                explodeAll();
+            } else {
+                if (Math.random() < 0.5) {
+                    scanExplode();
+                } else {
+                    explodeAll();
+                }
+            }
+        };
+
         draw();
 
         init();
