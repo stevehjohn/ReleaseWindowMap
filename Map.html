@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title>Release Window Map</title>
+    <!-- ReSharper disable MarkupAttributeTypo -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <!-- ReSharper disable Html.PathError -->
     <script src="scripts/d3.min.js"></script>
@@ -11,6 +12,8 @@
     <script src="scripts/moment.js"></script>
     <script src="scripts/moment-timezone-with-data.min.js"></script>
     <script src="scripts/suncalc.js"></script>
+    <!-- ReSharper restore Html.PathError -->
+    <!-- ReSharper restore MarkupAttributeTypo -->
     <style>
         body {
             margin: 0;
@@ -69,12 +72,13 @@
             z-index: 100000;
         }
 
-        div#daytime {
+        div.daytime {
             position: absolute;
             top: 0;
             height: 100vh;
-            background-color: #ffc300;
-            opacity: 0.2;
+            /* ReSharper disable once CssBrowserCompatibility */
+            background-image: linear-gradient(to right, #131313, #ffc300, #131313);
+            opacity: 0.125;
             z-index: 100000;
         }
 
@@ -116,6 +120,7 @@
             z-index: 9999;
             width: 100px;
             height: 100px;
+            /* ReSharper disable once CssBrowserCompatibility */
             transition: opacity 60s linear;
         }
 
@@ -125,6 +130,7 @@
             z-index: 9999;
             width: 100px;
             height: 100px;
+            /* ReSharper disable once CssBrowserCompatibility */
             transition: opacity 60s linear;
         }
 
@@ -148,7 +154,9 @@
     <div id="time"></div>
     <div id="beer"></div>
     <div id="scan"></div>
-    <div id="daytime"></div>
+    <div id="daytime-1" class="daytime"></div>
+    <div id="daytime-2" class="daytime"></div>
+    <div id="daytime-3" class="daytime"></div>
 <div class="info" id="info"></div>
     <div class="legend">
         <pre><span style="color: #ffc300">&#xff0d;</span> <span style="color: #19a7e9">High noon</span>
@@ -804,19 +812,15 @@
         }
 
         function pad(num) {
-            var ret = '' + num;
+            var ret = `${num}`;
             if (ret.length === 1) {
-                return '0' + num;
+                return `0${num}`;
             }
             return num;
         }
 
         function formatSeconds(seconds) {
-            return pad(Math.floor(seconds / 3600)) +
-                ':' +
-                pad(Math.floor(seconds % 3600 / 60)) +
-                '.' +
-                pad(seconds % 60);
+            return `${pad(Math.floor(seconds / 3600))}:${pad(Math.floor(seconds % 3600 / 60))}.${pad(seconds % 60)}`;
         }
 
         function displayCountry(country) {
@@ -845,12 +849,12 @@
         var dots = [];
 
         function setBoomTime() {
-            var now = new Date();
+            const now = new Date();
             var ttl = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 17, 0, 0, 0) - now;
             if (ttl < 0) {
                 ttl += 86400000;
             }
-            setTimeout(function() {
+            setTimeout(function () {
                 explodeAll();
                 setBoomTime();
             },
@@ -882,12 +886,12 @@
                 div.setAttribute('id', countries[i]);
                 document.getElementById('info').appendChild(div);
 
-                div.innerHTML = '<pre> <span style="color: #19a7e9;">' + displayCountry(countries[i]) + '</pre><pre></pre>';
+                div.innerHTML = `<pre> <span style="color: #19a7e9;">${displayCountry(countries[i])}</pre><pre></pre>`;
             }
 
             setBoomTime();
 
-            document.getElementById('container').onclick = function(e) {
+            document.getElementById('container').onclick = function (e) {
                 explode(e.pageX, e.pageY);
             }
         }
@@ -908,40 +912,40 @@
 
             var img = new Image();
             img.setAttribute('class', 'boom');
-            img.setAttribute('style', 'left: ' + (x - 50) + 'px; top: ' + (y - 50) + 'px; display: block;');
-            img.setAttribute('src', 'img/explosion.gif?bc=' + boomCount);
+            img.setAttribute('style', `left: ${x - 50}px; top: ${y - 50}px; display: block;`);
+            img.setAttribute('src', `img/explosion.gif?bc=${boomCount}`);
             boomCount++;
 
             document.getElementById('container').appendChild(img);
 
-            setTimeout(function() {
-                    document.getElementById('container').removeChild(img);
-                },
+            setTimeout(function () {
+                document.getElementById('container').removeChild(img);
+            },
                 7300);
 
-            setTimeout(function() {
-                    burn.setAttribute('style', 'left: ' + (x - 50) + 'px; top: ' + (y - 50) + 'px; display: block;');
-                    cloud.setAttribute('style', 'left: ' + (x - 50) + 'px; top: ' + (y - 50) + 'px; display: block;');
-                },
+            setTimeout(function () {
+                burn.setAttribute('style', `left: ${x - 50}px; top: ${y - 50}px; display: block;`);
+                cloud.setAttribute('style', `left: ${x - 50}px; top: ${y - 50}px; display: block;`);
+            },
                 5000);
 
-            setTimeout(function() {
-                    burn.classList.add('fade');
-                    cloud.classList.add('fade');
-                },
+            setTimeout(function () {
+                burn.classList.add('fade');
+                cloud.classList.add('fade');
+            },
                 8000);
 
-            setTimeout(function() {
-                    document.getElementById('container').removeChild(burn);
-                    document.getElementById('container').removeChild(cloud);
-                },
+            setTimeout(function () {
+                document.getElementById('container').removeChild(burn);
+                document.getElementById('container').removeChild(cloud);
+            },
                 80000);
         }
 
         function explodeWithDelay(x, y, delay) {
-            setTimeout(function() {
-                    explode(x, y);
-                },
+            setTimeout(function () {
+                explode(x, y);
+            },
                 delay);
         }
 
@@ -957,14 +961,14 @@
 
         function randomizeScanExplode() {
             var secs = 43200 + Math.random() * 86400;
-            setTimeout(function() {
-                    scanExplode();
-                },
+            setTimeout(function () {
+                scanExplode();
+            },
                 secs * 1000);
         }
 
         function scanLine() {
-            document.getElementById('scan').setAttribute("style", "display: block; top: " + scanY + "px;");
+            document.getElementById('scan').setAttribute("style", `display: block; top: ${scanY}px;`);
             scanY++;
             for (var c = 0; c < dots.length; c++) {
                 if (Math.floor(dots[c].y) === scanY) {
@@ -972,9 +976,9 @@
                 }
             }
             if (scanY < window.innerHeight) {
-                setTimeout(function() {
-                        scanLine();
-                    },
+                setTimeout(function () {
+                    scanLine();
+                },
                     100);
             } else {
                 document.getElementById('scan').setAttribute("style", "display: none;");
@@ -992,7 +996,7 @@
             for (var i = 0; i < clouds.length; i++) {
                 var cloud = clouds[i];
                 if (cloud.offsetLeft !== 0) {
-                    cloud.style.left = (parseInt(cloud.style.left) - cloud.getAttribute('data-speed')) + 'px';
+                    cloud.style.left = `${parseInt(cloud.style.left) - cloud.getAttribute('data-speed')}px`;
                 }
             }
         }
@@ -1069,12 +1073,8 @@
                 var end = getHour(slot.end) * 3600 + getMinute(slot.end) * 60;
 
                 if (now >= start && now <= end) {
-                    map.updateChoropleth(JSON.parse('{ "' + slot.country + '": { "fillKey": "OK" }}'));
-                    info.push(JSON.parse(' { "country": "' +
-                        slot.country +
-                        '", "remaining": ' +
-                        (end - now) +
-                        ' }'));
+                    map.updateChoropleth(JSON.parse(`{ "${slot.country}": { "fillKey": "OK" }}`));
+                    info.push(JSON.parse(` { "country": "${slot.country}", "remaining": ${end - now} }`));
                     if (!openCountries.includes(slot.country)) {
                         openCountries.push(slot.country);
                     }
@@ -1085,7 +1085,7 @@
 
             for (i = 0; i < countries.length; i++) {
                 if (!openCountries.includes(countries[i])) {
-                    map.updateChoropleth(JSON.parse('{ "' + countries[i] + '": { "fillKey": "CLOSED" }}'));
+                    map.updateChoropleth(JSON.parse(`{ "${countries[i]}": { "fillKey": "CLOSED" }}`));
                 }
             }
 
@@ -1110,7 +1110,7 @@
                     var r = 232 - g;
                     color = '#' + pad(r.toString(16)) + pad(g.toString(16)) + '00';
                 }
-                pre = pre + '<span style="color: ' + color + ';"> ' + formatSeconds(detail.remaining) + '</span>\n';
+                pre = `${pre}<span style="color: ${color};"> ${formatSeconds(detail.remaining)}</span>\n`;
                 div.children[1].innerHTML = pre;
             }
 
@@ -1162,9 +1162,9 @@
 
                     pre = div.children[1].innerHTML;
                     if (next === 2147483647) {
-                        pre = pre + '<span style="color: #e80000;"> ?</span>\n';
+                        pre = `${pre}<span style="color: #e80000;"> ?</span>\n`;
                     } else {
-                        pre = pre + '<span style="color: #e80000;">-' + formatSeconds(next) + '</span>\n';
+                        pre = `${pre}<span style="color: #e80000;">-${formatSeconds(next)}</span>\n`;
                     }
                     div.children[1].innerHTML = pre;
                 }
@@ -1175,7 +1175,7 @@
 
                 div = document.getElementById(country);
                 pre = div.children[1].innerHTML;
-                pre = pre + '\n<span style="color: #19a7e9;"> ' + formatTime(date, country) + '</span>\n';
+                pre = `${pre}\n<span style="color: #19a7e9;"> ${formatTime(date, country)}</span>\n`;
                 div.children[1].innerHTML = pre;
             }
 
@@ -1183,11 +1183,11 @@
 
             var middayLine = document.getElementById('time');
             var left = getXPositionForTime(now + 650);
-            middayLine.setAttribute('style', 'left: ' + left + 'px;');
+            middayLine.setAttribute('style', `left: ${left}px;`);
 
             var beerLine = document.getElementById('beer');
             left = getXPositionForTime(now - 17350);
-            beerLine.setAttribute('style', 'left: ' + left + 'px;');
+            beerLine.setAttribute('style', `left: ${left}px;`);
         }
 
         window.onkeyup = function (e) {
@@ -1205,16 +1205,29 @@
         };
 
         function infrequentUpdate() {
-            var sun = SunCalc.getTimes(new Date(), 51.4545, -2.5879);
+            const sun = SunCalc.getTimes(new Date(), 51.4545, -2.5879);
 
-            var sunrise = secondsSinceMidnight(sun.sunrise);
-            var sunset = secondsSinceMidnight(sun.sunset);
+            const sunrise = secondsSinceMidnight(sun.sunrise);
+            const sunset = secondsSinceMidnight(sun.sunset);
+            // const now = secondsSinceMidnight(new Date());
+            const now = 17961;
 
             var left = getXPositionForTime(sunrise);
             var right = getXPositionForTime(sunset);
 
-            var daytime = document.getElementById('daytime');
-            daytime.setAttribute('style', 'left: ' + right + 'px; width: ' + (left - right) + 'px;');
+            console.log(sunrise);
+            console.log(sunset);
+            console.log(left);
+            console.log(right);
+
+            const width = left - right;
+
+            var daytime = document.getElementById('daytime-1');
+            daytime.setAttribute('style', `left: ${right}px; width: ${width}px;`);
+            daytime = document.getElementById('daytime-2');
+            daytime.setAttribute('style', `left: ${right + window.innerWidth}px; width: ${width}px;`);
+            daytime = document.getElementById('daytime-2');
+            daytime.setAttribute('style', `left: ${right - window.innerWidth}px; width: ${width}px;`);
         }
 
         draw();
