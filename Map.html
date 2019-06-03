@@ -10,6 +10,7 @@
     <script src="scripts/datamaps.world.hires.min.js"></script>
     <script src="scripts/moment.js"></script>
     <script src="scripts/moment-timezone-with-data.min.js"></script>
+    <script src="scripts/suncalc.js"></script>
     <style>
         body {
             margin: 0;
@@ -39,9 +40,9 @@
             margin-right: 20px;
         }
 
-        div.country:last-child {
-            margin-right: 10px;
-        }
+            div.country:last-child {
+                margin-right: 10px;
+            }
 
         div#container {
             width: 100%;
@@ -65,6 +66,15 @@
             width: 2px;
             background-color: #009900;
             opacity: 0.4;
+            z-index: 100000;
+        }
+
+        div#daytime {
+            position: absolute;
+            top: 0;
+            height: 100vh;
+            background-color: #ffc300;
+            opacity: 0.2;
             z-index: 100000;
         }
 
@@ -138,7 +148,8 @@
     <div id="time"></div>
     <div id="beer"></div>
     <div id="scan"></div>
-    <div class="info" id="info"></div>
+    <div id="daytime"></div>
+<div class="info" id="info"></div>
     <div class="legend">
         <pre><span style="color: #ffc300">&#xff0d;</span> <span style="color: #19a7e9">High noon</span>
 <span style="color: #009900">&#xff0d;</span> <span style="color: #19a7e9">Beer o'clock</span></pre>
@@ -1032,6 +1043,10 @@
             return x;
         }
 
+        function secondsSinceMidnight(date) {
+            return date.getHours() * 3600 + date.getMinutes() * 60 + date.getSeconds();
+        }
+
         function update() {
             var openCountries = [];
 
@@ -1164,15 +1179,15 @@
                 div.children[1].innerHTML = pre;
             }
 
-            now = date.getHours() * 3600 + date.getMinutes() * 60 + date.getSeconds();
+            now = secondsSinceMidnight(date);
 
             var middayLine = document.getElementById('time');
             var left = getXPositionForTime(now + 650);
-            middayLine.setAttribute("style", "left: " + left + 'px;');
+            middayLine.setAttribute('style', 'left: ' + left + 'px;');
 
             var beerLine = document.getElementById('beer');
             left = getXPositionForTime(now - 17350);
-            beerLine.setAttribute("style", "left: " + left + 'px;');
+            beerLine.setAttribute('style', 'left: ' + left + 'px;');
         }
 
         window.onkeyup = function (e) {
@@ -1189,6 +1204,19 @@
             }
         };
 
+        function infrequentUpdate() {
+            var sun = SunCalc.getTimes(new Date(), 51.4545, -2.5879);
+
+            var sunrise = secondsSinceMidnight(sun.sunrise);
+            var sunset = secondsSinceMidnight(sun.sunset);
+
+            var left = getXPositionForTime(sunrise);
+            var right = getXPositionForTime(sunset);
+
+            var daytime = document.getElementById('daytime');
+            daytime.setAttribute('style', 'left: ' + right + 'px; width: ' + (left - right) + 'px;');
+        }
+
         draw();
 
         init();
@@ -1198,6 +1226,10 @@
         setInterval(update, 500);
 
         setInterval(drift, 50);
+
+        setInterval(infrequentUpdate, 3600000);
+
+        infrequentUpdate();
 
         randomizeScanExplode();
     </script>
