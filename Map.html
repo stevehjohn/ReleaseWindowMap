@@ -33,6 +33,7 @@
             /* ReSharper disable once CssBrowserCompatibility */
             flex-wrap: wrap;
             /* ReSharper disable once RequiresFallbackColor */
+            /* ReSharper disable once CssBrowserCompatibility */
             background-color: rgba(80, 80, 80, 0.31);
             z-index: 999999;
         }
@@ -40,10 +41,10 @@
         div.country {
             color: #00e800;
             /* ReSharper disable once InvalidValue */
-            display: flexbox;
             margin-right: 20px;
         }
 
+        /* ReSharper disable once CssBrowserCompatibility */
         div.country:last-child { margin-right: 10px; }
 
         div#container {
@@ -57,6 +58,7 @@
             height: 100vh;
             width: 2px;
             background-color: #ffc300;
+            /* ReSharper disable once CssBrowserCompatibility */
             opacity: 0.4;
             z-index: 100000;
         }
@@ -67,6 +69,7 @@
             height: 100vh;
             width: 2px;
             background-color: #009900;
+            /* ReSharper disable once CssBrowserCompatibility */
             opacity: 0.4;
             z-index: 100000;
         }
@@ -77,8 +80,11 @@
             height: 100vh;
             /* ReSharper disable once CssBrowserCompatibility */
             background-image: linear-gradient(to right, #131313, #ffc300, #131313);
+            /* ReSharper disable once CssBrowserCompatibility */
             opacity: 0.125;
             z-index: 100000;
+            border-left: #8a2be2 2px solid;
+            border-right: #8a2be2 2px solid;
         }
 
         div#scan {
@@ -87,6 +93,7 @@
             width: 100vw;
             height: 1px;
             background-color: #19a7e9;
+            /* ReSharper disable once CssBrowserCompatibility */
             opacity: 0.2;
             display: none;
         }
@@ -101,6 +108,7 @@
             left: 5%;
             top: 60%;
             /* ReSharper disable once RequiresFallbackColor */
+            /* ReSharper disable once CssBrowserCompatibility */
             background-color: rgba(80, 80, 80, 0.31);
             padding: 4px 20px;
             z-index: 999999;
@@ -159,10 +167,11 @@
 <div id="daytime-3" class="daytime"></div>
 <div class="info" id="info"></div>
 <div class="legend">
-    <pre><span style="color: #ffc300">&#xff0d;</span> <span style="color: #19a7e9">High noon</span>
-<span style="color: #009900">&#xff0d;</span> <span style="color: #19a7e9">Beer o'clock</span></pre>
+    <pre><span style="color: #ffc300">&#xff0d;</span> <span style="color: #19a7e9">High Noon</span>
+<span style="color: #009900">&#xff0d;</span> <span style="color: #19a7e9">Beer o'Clock</span>
+<span style="color: #8a2be2">&#xff0d;</span> <span style="color: #19a7e9">Sunrise / Sunset</span></pre>
 </div>
-<div id="version">1.4 2019.06.04</div>
+<div id="version">1.4 2019.06.05</div>
 <script>
     var countries = ['AUS', 'DNK', 'ESP', 'FRA', 'GBR', 'IRL', 'ITA', 'NOR', 'NZL'];
 
@@ -707,6 +716,14 @@
         },
         {
             radius: 2,
+            fillKey: 'OFFICE',
+            latitude: 50.4501,
+            longitude: 30.5234,
+            borderWidth: 0,
+            name: 'Kyiv'
+        },
+        {
+            radius: 2,
             fillKey: 'CUSTOMER',
             latitude: 51.0486,
             longitude: -114.0708,
@@ -812,7 +829,7 @@
     }
 
     function pad(num) {
-        var ret = `${num}`;
+        const ret = `${num}`;
         if (ret.length === 1) {
             return `0${num}`;
         }
@@ -960,7 +977,7 @@
 
     function explodeAll() {
         var wait = 0;
-        for (var i = 0; i < dots.length; i++) {
+        for (let i = 0; i < dots.length; i++) {
             explodeWithDelay(dots[i].x, dots[i].y, wait);
             wait += 1000 + Math.random() * 1000;
         }
@@ -1068,7 +1085,7 @@
 
         //var date = new Date();
 
-        date = window.moment(date).add(5, 'm').toDate();
+        date = window.moment(date).add(1, 'm').toDate();
 
         var day = date.getDay();
 
@@ -1209,15 +1226,15 @@
 
         const sunlightWidth = (86400 - (sunset - sunrise)) / 86400 * window.innerWidth;
 
-        const leftOfNoon = (43200 - sunrise) % 86400;
+        const leftOfNoon = 43200 - sunrise;
 
         left = getXPositionForTime(now + 650 - leftOfNoon);
 
         var daytime = document.getElementById('daytime-1');
-        daytime.setAttribute('style', `left: ${left}px; width: ${sunlightWidth}x;`);
+        daytime.setAttribute('style', `left: ${left}px; width: ${sunlightWidth}px;`);
         daytime = document.getElementById('daytime-2');
         daytime.setAttribute('style', `left: ${left + window.innerWidth}px; width: ${sunlightWidth}px;`);
-        daytime = document.getElementById('daytime-2');
+        daytime = document.getElementById('daytime-3');
         daytime.setAttribute('style', `left: ${left - window.innerWidth}px; width: ${sunlightWidth}px;`);
     }
 
@@ -1241,7 +1258,7 @@
 
     update();
 
-    setInterval(update, 50);
+    setInterval(update, 500);
 
     setInterval(drift, 50);
 
