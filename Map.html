@@ -933,7 +933,7 @@
         var cloud = new Image();
         cloud.setAttribute('class', 'cloud');
         cloud.setAttribute('src', 'img/burn.png');
-        cloud.setAttribute('data-speed', Math.random() / 2);
+        cloud.setAttribute('data-speed', Math.random());
         document.getElementById('container').appendChild(cloud);
 
         var img = new Image();
@@ -1021,9 +1021,7 @@
 
         for (let i = 0; i < clouds.length; i++) {
             const cloud = clouds[i];
-            if (cloud.offsetLeft !== 0) {
-                cloud.style.left = `${parseInt(cloud.style.left) - cloud.getAttribute('data-speed')}px`;
-            }
+            cloud.style.left = `${parseFloat(cloud.style.left) - cloud.getAttribute('data-speed')}px`;
         }
     }
 
