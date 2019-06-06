@@ -81,7 +81,7 @@
             /* ReSharper disable once CssBrowserCompatibility */
             background-image: linear-gradient(to right, #131313, #ffc300, #131313);
             /* ReSharper disable once CssBrowserCompatibility */
-            opacity: 0.125;
+            opacity: 0.225;
             z-index: 100000;
             border-left: #8a2be2 2px solid;
             border-right: #8a2be2 2px solid;
@@ -1222,11 +1222,11 @@
         const sunrise = secondsSinceMidnight(sun.sunrise);
         const sunset = secondsSinceMidnight(sun.sunset);
 
-        const sunlightWidth = (86400 - (sunset - sunrise)) / 86400 * window.innerWidth;
+        const sunlightWidth = (sunset - sunrise) / 86400 * window.innerWidth;
 
         const leftOfNoon = 43200 - sunrise;
 
-        left = getXPositionForTime(now + 650 - leftOfNoon);
+        left = getXPositionForTime(now + 650 + leftOfNoon);
 
         var daytime = document.getElementById('daytime-1');
         daytime.setAttribute('style', `left: ${left}px; width: ${sunlightWidth}px;`);
