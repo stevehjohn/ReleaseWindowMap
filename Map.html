@@ -951,7 +951,9 @@
 
         setTimeout(function() {
                 burn.setAttribute('style', `left: ${x - 50}px; top: ${y - 50}px; display: block;`);
+                burn.style.transform = `rotate(${Math.random() * 360}deg)`;
                 cloud.setAttribute('style', `left: ${x - 50}px; top: ${y - 50}px; display: block;`);
+                cloud.style.transform = `rotate(${Math.random() * 360}deg)`;
             },
             5000);
 
