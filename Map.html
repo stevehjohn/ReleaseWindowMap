@@ -176,7 +176,7 @@
 <span style="color: #009900">&#xff0d;</span> <span style="color: #19a7e9">Beer o'Clock</span>
 <span style="color: #8a2be2">&#xff0d;</span> <span style="color: #19a7e9">Sunrise / Sunset</span></pre>
 </div>
-<div id="version">1.6 2019.06.27</div>
+<div id="version">1.7 2019.06.27</div>
 <!-- ReSharper disable once Html.PathError -->
 <img src="img/iss.png" alt="ISS" id="iss" />
 <script>
@@ -1248,14 +1248,14 @@
             if (this.readyState === 4 && this.status === 200) {
                 const coords = JSON.parse(this.responseText);
 
-                const position = map.projection([coords.iss_position.longitude, coords.iss_position.latitude]);
+                const position = map.projection([coords.longitude, coords.latitude]);
 
                 const iss = document.getElementById('iss');
                 iss.setAttribute('style', `display: block; left: ${position[0]}px; top: ${position[1]}px;`);
             }
         }
 
-        xmlHttp.open('GET', 'http://api.open-notify.org/iss-now.json', true);
+        xmlHttp.open('GET', 'https://api.wheretheiss.at/v1/satellites/25544', true);
         xmlHttp.send();
     }
 
