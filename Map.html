@@ -1251,7 +1251,7 @@
                 const position = map.projection([coords.longitude, coords.latitude]);
 
                 const iss = document.getElementById('iss');
-                iss.setAttribute('style', `display: block; left: ${position[0]}px; top: ${position[1]}px;`);
+                iss.setAttribute('style', `display: block; left: ${position[0] - iss.width / 2}px; top: ${position[1] - iss.height / 2}px;`);
             }
         }
 
@@ -1284,6 +1284,8 @@
     setInterval(drift, 50);
 
     randomizeScanExplode();
+
+    updateIss();
 
     setInterval(updateIss, 5000);
 
